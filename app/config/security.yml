@@ -1,0 +1,45 @@
+# To get started with security, check out the documentation:
+# https://symfony.com/doc/current/security.html
+security:
+    providers:
+        our_db_provider:
+             entity:
+                 class: AppBundle:User
+                 property: username
+                    # регаемся по юзернйму(можно изменить на имэил)
+                    # if you're using multiple entity managers
+                    # manager_name: customer
+#                    ryan:
+#                        password: $2a$12$LCY0MefVIEc3TYPHV9SNnuzOfyr2p/AXIGoQJEDs4am4JwhNz/jli
+#                        roles: 'ROLE_USER'
+#                    admin:
+#                        password: $2y$13$wXTMkqDkxvXY0Gd8XzFxsu/CZeM1k7iOvwD.9gFk4qDnSovrL3zlq
+#                        roles: 'ROLE_ADMIN'
+    encoders:
+            Symfony\Component\Security\Core\User\User: bcrypt
+    # ...
+
+    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            anonymous: ~
+            # activate different ways to authenticate
+
+            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+            #http_basic: ~
+             # Надо сделать форму входа!!!!
+            # https://symfony.com/doc/current/security/form_login_setup.html
+            form_login:
+                login_path: login
+                check_path: login
+            provider: our_db_provider
+    access_control:
+         # require ROLE_ADMIN for /admin*
+         - { path: ^/admin, roles: ROLE_ADMIN }
+#Надо сделать иерархию ролей(их примерно 4 штуки). Создать онтроллеры для всех будущих ресурсов. Могут возвращать заглушки.
+#

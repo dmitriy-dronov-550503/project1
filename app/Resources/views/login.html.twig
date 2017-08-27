@@ -4,13 +4,13 @@
 {% endif %}
 
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Authorization{% endblock %}</title>
-    </head>
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Authorization{% endblock %}</title>
+</head>
 
-    <body>
-    <form action="{{ path('login') }}" method="post">
+<body>
+<form action="{{ path('login') }}" method="post">
     <label for="username">Username:</label>
     <input type="text" id="username" name="_username" value="{{ last_username }}" />
 
@@ -22,8 +22,7 @@
         is redirected to on success (more details below)
         <input type="hidden" name="_target_path" value="/account" />
     #}
-    <input type="hidden" name="_target_path" value="/account" />
     <button type="submit">login</button>
-    </form>
-    </body>
+</form>
+</body>
 </html>

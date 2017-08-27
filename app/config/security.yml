@@ -5,8 +5,7 @@ security:
         our_db_provider:
              entity:
                  class: AppBundle:User
-                 property: username
-                    # регаемся по юзернйму(можно изменить на имэил)
+                 property: username # регаемся по юзернйму(можно изменить на имэил)
                     # if you're using multiple entity managers
                     # manager_name: customer
 #                    ryan:
@@ -16,7 +15,9 @@ security:
 #                        password: $2y$13$wXTMkqDkxvXY0Gd8XzFxsu/CZeM1k7iOvwD.9gFk4qDnSovrL3zlq
 #                        roles: 'ROLE_ADMIN'
     encoders:
-            Symfony\Component\Security\Core\User\User: bcrypt
+        AppBundle\Entity\User:
+              algorithm: bcrypt
+#            Symfony\Component\Security\Core\User\User: bcrypt
     # ...
 
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
@@ -29,9 +30,9 @@ security:
         main:
             anonymous: ~
             # activate different ways to authenticate
-
+            pattern:    ^/
             # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-            #http_basic: ~
+            http_basic: ~
              # Надо сделать форму входа!!!!
             # https://symfony.com/doc/current/security/form_login_setup.html
             form_login:

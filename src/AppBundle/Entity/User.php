@@ -45,11 +45,6 @@ class User implements AdvancedUserInterface, \Serializable
      */
     private $isActive;
 
-    /**
-     * @ORM\Column(name="role", type="boolean", type="string", length=30, unique=false)
-     */
-    private $role;
-
     public function __construct()
     {
         $this->isActive = true;
@@ -76,7 +71,7 @@ class User implements AdvancedUserInterface, \Serializable
 
     public function getRoles()
     {
-        return array($this->role);
+        return array('ROLE_USER');
     }
 
     public function eraseCredentials()

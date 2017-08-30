@@ -6,8 +6,6 @@ security:
              entity:
                  class: AppBundle:User
                  property: username # регаемся по юзернйму(можно изменить на имэил)
-                    # if you're using multiple entity managers
-                    # manager_name: customer
 #                    ryan:
 #                        password: $2a$12$LCY0MefVIEc3TYPHV9SNnuzOfyr2p/AXIGoQJEDs4am4JwhNz/jli
 #                        roles: 'ROLE_USER'
@@ -17,8 +15,6 @@ security:
     encoders:
         AppBundle\Entity\User:
               algorithm: bcrypt
-#            Symfony\Component\Security\Core\User\User: bcrypt
-    # ...
 
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     firewalls:
@@ -42,5 +38,6 @@ security:
     access_control:
          # require ROLE_ADMIN for /admin*
          - { path: ^/admin, roles: ROLE_ADMIN }
+         - { path: ^/user*, roles: ROLE_USER }
 #Надо сделать иерархию ролей(их 3 штуки + анонимные пользователи). Создать онтроллеры для всех будущих ресурсов. Могут возвращать заглушки.
 #

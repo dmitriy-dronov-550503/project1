@@ -7,7 +7,14 @@
 <head>
     <meta charset="UTF-8" />
     <title>{% block title %}Authorization{% endblock %}</title>
-    {#<link rel="stylesheet" type="text/css" href="web/css/login.css">#}
+    {#{% stylesheets 'bundles/app/css/*' filter='cssrewrite' %}#}
+    {#<link rel="stylesheet" href="{{ asset('web/public/css/bootstrap-heme.min.css') }}" />#}
+    {#{% endstylesheets %}#}
+    <link rel="stylesheet" href="{{ asset('web/public/css/bootstrap-heme.min.css') }}" />
+    {#{% stylesheets#}
+    {#filter='cssrewrite' output='css/compiled/app.css' %}#}
+    {#<link rel="stylesheet" href="{{ 'web/public/css/login.css' }}" />#}
+    {#{% endstylesheets %}#}
 </head>
 
 <body>

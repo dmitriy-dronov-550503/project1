@@ -1,36 +1,63 @@
 <!DOCTYPE html>
-{% if error %}
-    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-{% endif %}
-
-<html>
+<!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]> <html class="lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]> <html class="lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
 <head>
-    <meta charset="UTF-8" />
-    <title>{% block title %}Authorization{% endblock %}</title>
-    {#{% stylesheets 'bundles/app/css/*' filter='cssrewrite' %}#}
-    {#<link rel="stylesheet" href="{{ asset('web/public/css/bootstrap-heme.min.css') }}" />#}
-    {#{% endstylesheets %}#}
-    <link rel="stylesheet" href="{{ asset('web/public/css/bootstrap-heme.min.css') }}" />
-    {#{% stylesheets#}
-    {#filter='cssrewrite' output='css/compiled/app.css' %}#}
-    {#<link rel="stylesheet" href="{{ 'web/public/css/login.css' }}" />#}
-    {#{% endstylesheets %}#}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Authorization</title>
+    <link rel="stylesheet" href="{{ asset('public/css/login.css') }}" />
+    <link rel="icon" href="http://vladmaxi.net/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="http://vladmaxi.net/favicon.ico" type="image/x-icon">
 </head>
-
 <body>
-<form action="{{ path('login') }}" method="post">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="_username" value="{{ last_username }}" />
+<form method="post" action="{{ path('login') }}" class="login">
+    <p>
+        <label for="username">Username:</label>
+        <input type="text" name="_username" id="username" value="{{ last_username }}" />
+    </p>
 
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="_password" />
+    <p>
+        <label for="password">Password:</label>
+        <input type="password" name="_password" id="password" value="">
+    </p>
 
-    {#
-        If you want to control the URL the user
-        is redirected to on success (more details below)
-        <input type="hidden" name="_target_path" value="/account" />
-    #}
-    <button type="submit">login</button>
+    <p class="login-submit">
+        <button type="submit" class="login-button">Sign In</button>
+    </p>
+
+    <p class="forgot-password"><a href='/register'>Forgot password?</a></p>
 </form>
 </body>
 </html>
+
+{#<!DOCTYPE html>#}
+{#{% if error %}#}
+    {#<div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>#}
+{#{% endif %}#}
+
+{#<html>#}
+{#<head>#}
+    {#<meta charset="UTF-8" />#}
+    {#<title>{% block title %}Authorization{% endblock %}</title>#}
+    {#<link rel="stylesheet" href="{{ asset('public/css/login.css') }}" />#}
+{#</head>#}
+
+{#<body>#}
+{#<form action="{{ path('login') }}" method="post">#}
+    {#<label for="username">Username:</label>#}
+    {#<input type="text" id="username" name="_username" value="{{ last_username }}" />#}
+
+    {#<label for="password">Password:</label>#}
+    {#<input type="password" id="password" name="_password" />#}
+
+    {##}
+        {#If you want to control the URL the user#}
+        {#is redirected to on success (more details below)#}
+        {#<input type="hidden" name="_target_path" value="/account" />#}
+    {##}
+    {#<button type="submit">login</button>#}
+{#</form>#}
+{#</body>#}
+{#</html>#}

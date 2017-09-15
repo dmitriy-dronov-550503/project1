@@ -3,7 +3,8 @@
 namespace AppBundle\Entity;
 
 /**
- * Category
+ * @ORM\Table(name="categories")
+ * @ORM\Entity()
  */
 class Category
 {

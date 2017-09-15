@@ -12,7 +12,7 @@ class UserPageController extends Controller
      */
     public function loginAction()
     {
-        return $this->render('userpage.html');
+        return $this->render('userpage.html.twig');
     }
 
 }

@@ -2,6 +2,10 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Table(name="products")
@@ -23,19 +27,19 @@ class Product
     private $name;
 
     /**
-     * @ORM\Column(name="date_was_created", type="string", length=50, unique=)
+     * @ORM\Column(name="date_was_created", type="string", length=50)
      * @Assert\NotBlank()
      */
     private $dateWasCreated;
 
     /**
-     * @ORM\Column(name="date_last_change", type="string", length=50, unique=)
+     * @ORM\Column(name="date_last_change", type="string", length=50)
      * @Assert\NotBlank()
      */
     private $dateLastChange;
 
     /**
-     * @ORM\Column(name="is_active", type="boolean", length=50, unique=)
+     * @ORM\Column(name="is_active", type="boolean", length=50)
      * @Assert\NotBlank()
      */
     private $isActive;

@@ -3,8 +3,7 @@
 namespace AppBundle\Entity;
 
 /**
- * @ORM\Table(name="categories")
- * @ORM\Entity()
+ * Category
  */
 class Category
 {
@@ -12,6 +11,8 @@ class Category
      * @var int
      */
     private $id;
+
+    private $category;
     /**
      * Get id
      *

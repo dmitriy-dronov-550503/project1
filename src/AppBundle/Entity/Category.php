@@ -19,13 +19,30 @@ class Category
      */
     private $id;
 
+    /**
+     * @ORM\Column(type="string", length=191, unique=true)
+     * @Assert\NotBlank()
+     */
+    private $name;
 
     /**
-     * One Student has One Student.
-     * @ORM\OneToOne(targetEntity="Category")
+     * @ORM\Column(name="is_active", type="boolean")
+     * @Assert\NotBlank()
+     */
+    private $isActive;
+
+    /**
+     * One Category has Many Categories.
+     * @ORM\OneToMany(targetEntity="Category", mappedBy="parent")
+     */
+    private $children;
+
+    /**
+     * Many Categories have One Category.
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */
-    private $parentCategory;
+    private $parent;
 
     /**
      * One Category has Many Products.
@@ -33,38 +50,10 @@ class Category
      */
     private $products;
 
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
+    public function __construct() {
+        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-    /**
-     * Set category
-     *
-     * @param string $category
-     *
-     * @return Category
-     */
-    public function setCategory($category)
-    {
-        $this->category = $category;
 
-        return $this;
-    }
-
-    /**
-     * Get category
-     *
-     * @return string
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
 }
 

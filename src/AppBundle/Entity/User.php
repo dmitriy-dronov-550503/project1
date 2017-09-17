@@ -59,6 +59,24 @@ class User implements AdvancedUserInterface, \Serializable
      */
     private $role;
 
+    /**
+     * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank()
+     */
+    private $firstName;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank()
+     */
+    private $lastName;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank()
+     */
+    private $patronymicName;
+
     public function __construct()
     {
         $this->isActive = true;

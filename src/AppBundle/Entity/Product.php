@@ -52,7 +52,15 @@ class Product
     private $uniqueIdentifier;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Category")
+     * One Product has Many Attributes.
+     * @ORM\OneToMany(targetEntity="Attribute", mappedBy="product")
+     */
+    private $attributes;
+
+    /**
+     * Many Products have One Category.
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="products")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     private $category;
 

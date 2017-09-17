@@ -19,7 +19,20 @@ class Category
      */
     private $id;
 
-    private $category;
+
+    /**
+     * One Student has One Student.
+     * @ORM\OneToOne(targetEntity="Category")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     */
+    private $parentCategory;
+
+    /**
+     * One Category has Many Products.
+     * @ORM\OneToMany(targetEntity="Product", mappedBy="category")
+     */
+    private $products;
+
     /**
      * Get id
      *

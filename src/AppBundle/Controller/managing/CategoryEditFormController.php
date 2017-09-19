@@ -11,6 +11,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/**
+ * Class CategoryEditFormController
+ * @package AppBundle\Controller\managing
+ * Form to edit category
+ */
 class CategoryEditFormController extends Controller
 {
     /**

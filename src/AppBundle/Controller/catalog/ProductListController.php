@@ -6,6 +6,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class ProductListController
+ * @package AppBundle\Controller\catalog
+ * Page with list of products with filtration and sorting.
+ */
 class ProductListController extends Controller
 {
     /**

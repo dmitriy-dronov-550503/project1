@@ -6,6 +6,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class ProductViewController
+ * @package AppBundle\Controller\catalog
+ * Page of one product
+ */
 class ProductViewController extends Controller
 {
     // there should be uniq URLs for each product in Rout

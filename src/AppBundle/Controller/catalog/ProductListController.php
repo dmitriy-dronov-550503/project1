@@ -18,4 +18,17 @@ class ProductListController extends Controller
             'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
         ]);
     }
+
+    public function updateDataAction(){
+        $request = $this->container->get('request');
+        $data1 = $request->query->get('data1');
+        $data2 = $request->query->get('data2');
+
+        //handle data
+
+        //prepare the response, e.g.
+        $response = array("code" => 100, "success" => true);
+        //you can return result as JSON
+        return new Response(json_encode($response));
+    }
 }

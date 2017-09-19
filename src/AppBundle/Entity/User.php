@@ -8,7 +8,6 @@
 
 namespace AppBundle\Entity;
 
-
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -59,6 +58,24 @@ class User implements AdvancedUserInterface, \Serializable
      * @ORM\Column(name="role", type="string", length=30, unique=false)
      */
     private $role;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank()
+     */
+    private $firstName;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank()
+     */
+    private $lastName;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank()
+     */
+    private $patronymicName;
 
     public function __construct()
     {

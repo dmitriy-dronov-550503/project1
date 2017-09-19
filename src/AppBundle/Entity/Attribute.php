@@ -20,7 +20,9 @@ class Attribute
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Product")
+     * Many Attributes have One Product.
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="attributes")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
      */
     private $product;
 

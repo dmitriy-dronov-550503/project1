@@ -6,6 +6,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class ProductEditFormController
+ * @package AppBundle\Controller\managing
+ * Form to edit product
+ */
 class ProductEditFormController extends Controller
 {
     /**

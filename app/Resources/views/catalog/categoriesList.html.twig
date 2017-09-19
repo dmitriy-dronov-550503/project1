@@ -1,0 +1,7 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Category List</h1>
+    {% include "includes/child-categories.html.twig" with {'categories':categories} only %}
+
+{% endblock %}

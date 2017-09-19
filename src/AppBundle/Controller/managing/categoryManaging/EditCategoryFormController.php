@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class EditCategoryFormController extends Controller
 {
     /**
-     * @Route("/edit_category", name="edit_category")
+     * @Route("/category_edit", name="category_edit")
      */
     public function registerAction(Request $request)
     {

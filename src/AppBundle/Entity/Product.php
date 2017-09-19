@@ -27,6 +27,11 @@ class Product
     private $name;
 
     /**
+     * @ORM\Column(name="description", length=1000, type="text")
+     */
+    private $description;
+
+    /**
      * @ORM\Column(name="date_was_created", type="datetimetz")
      * @Assert\NotBlank()
      */

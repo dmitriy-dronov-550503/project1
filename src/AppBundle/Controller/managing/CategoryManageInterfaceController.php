@@ -7,6 +7,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class CategoryManageInterfaceController
+ * @package AppBundle\Controller\managing
+ * Interface to change connections between categories
+ */
 class  CategoryManageInterfaceController extends Controller
 {
     /**

@@ -6,6 +6,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class CategoriesListController
+ * @package AppBundle\Controller\catalog
+ * List of all categories. In form of categories tree
+ */
 class CategoriesListController extends Controller
 {
     /**

@@ -18,7 +18,7 @@ class  CategoryManageInterfaceController extends Controller
 
         // replace this example code with whatever you need
         return $this->render(
-            'managing/categoryManaging/categoryManageInterface.html.twig',
+            'managing/categoryManageInterface.html.twig',
             array('categories' => $repository->findByName("Categories"))
         );
     }

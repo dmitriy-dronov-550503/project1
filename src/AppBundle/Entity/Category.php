@@ -55,6 +55,29 @@ class Category
         $this->isActive = true;
     }
 
+    public function getId() {
+        return $this->id;
+    }
+
+    public function getName() {
+        return $this->name;
+    }
+
+    public function getIsActive() {
+        return $this->isActive;
+    }
+
+    public function getParent() {
+        return $this->parent;
+    }
+
+    public function getChildren() {
+        return $this->children;
+    }
+
+    public function getProducts() {
+        return $this->products;
+    }
 
 }
 

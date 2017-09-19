@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class EditCategoryFormController extends Controller
+class CategoryEditFormController extends Controller
 {
     /**
      * @Route("/edit_category", name="edit_category")

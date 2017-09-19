@@ -1,20 +1,20 @@
 <?php
 
-namespace AppBundle\Controller\managing\productManaging;
+namespace AppBundle\Controller\catalog;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ProductManageInterfaceController extends Controller
+class CategoriesListController extends Controller
 {
     /**
-     * @Route("/product_manage", name="product_manage")
+     * @Route("/categories", name="categories")
      */
     public function indexAction(Request $request)
     {
         // replace this example code with whatever you need
-        return $this->render('managing/productManaging/productManageInterface.html.twig', [
+        return $this->render('catalog/categoriesList.html.twig', [
             'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
         ]);
     }

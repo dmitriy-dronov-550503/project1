@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ProductViewController extends Controller
 {
+    // there should be uniq URLs for each product in Rout
     /**
      * @Route("/product_view", name="product_view")
      */

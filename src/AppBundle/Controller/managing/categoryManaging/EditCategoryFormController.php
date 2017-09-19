@@ -1,5 +1,7 @@
 <?php
 
+namespace AppBundle\Controller\managing\categoryManaging;
+
 use AppBundle\Entity\Category;
 use AppBundle\Form\EditCategoryType;
 use AppBundle\Form\UserType;
@@ -29,7 +31,7 @@ class EditCategoryFormController extends Controller
         }
 
         return $this->render(
-            'managing/categoryManaging/editCategoryForm',
+            'managing/categoryManaging/editCategoryForm.html.twig',
             array('form' => $form->createView())
         );
     }

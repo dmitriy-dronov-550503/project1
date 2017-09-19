@@ -1,12 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Admin
- * Date: 24.08.2017
- * Time: 23:38
- */
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\login;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

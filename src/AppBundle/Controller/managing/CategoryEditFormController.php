@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\managing\categoryManaging;
+namespace AppBundle\Controller\managing;
 
 use AppBundle\Entity\Category;
 use AppBundle\Form\EditCategoryType;

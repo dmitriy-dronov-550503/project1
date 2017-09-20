@@ -4,12 +4,9 @@ namespace AppBundle\Controller\managing;
 
 use AppBundle\Entity\Category;
 use AppBundle\Form\EditCategoryType;
-use AppBundle\Form\UserType;
-use AppBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Class CategoryEditFormController
@@ -21,7 +18,7 @@ class CategoryEditFormController extends Controller
     /**
      * @Route("/category_edit", name="category_edit")
      */
-    public function registerAction(Request $request)
+    public function categoryEditAction(Request $request)
     {
         $category = new Category();
         $form = $this->createForm(EditCategoryType::class, $category);
@@ -36,7 +33,7 @@ class CategoryEditFormController extends Controller
         }
 
         return $this->render(
-            'managing/categoryManaging/editCategoryForm.html.twig',
+            'managing/categoryEditForm.html.twig',
             array('form' => $form->createView())
         );
     }

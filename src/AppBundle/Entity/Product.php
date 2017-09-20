@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
@@ -81,6 +80,134 @@ class Product
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */
     private $parent;
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDateWasCreated()
+    {
+        return $this->dateWasCreated;
+    }
+
+    /**
+     * @param mixed $dateWasCreated
+     */
+    public function setDateWasCreated($dateWasCreated)
+    {
+        $this->dateWasCreated = $dateWasCreated;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDateLastChange()
+    {
+        return $this->dateLastChange;
+    }
+
+    /**
+     * @param mixed $dateLastChange
+     */
+    public function setDateLastChange($dateLastChange)
+    {
+        $this->dateLastChange = $dateLastChange;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getisActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param mixed $isActive
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param mixed $category
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @param mixed $parent
+     */
+    public function setParent($parent)
+    {
+        $this->parent = $parent;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUniqueIdentifier()
+    {
+        return $this->uniqueIdentifier;
+    }
 
     public function __construct() {
         $this->attributes = new \Doctrine\Common\Collections\ArrayCollection();

@@ -17,7 +17,7 @@ class EditProductType extends AbstractType
         $builder
             ->add('name', TextType::class)
             ->add('description', TextareaType::class)
-            ->add('users', EntityType::class, array(
+            ->add('category', EntityType::class, array(
                 'class' => 'AppBundle:Category',
                 'choice_label' => 'name',
             ))

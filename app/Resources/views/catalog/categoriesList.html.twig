@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Category List</h1>
+    {% for main_category in categories %}
+        <li>{{ main_category.name }}</li>
+        <ul>
+        {% include "includes/child-categories.html.twig" with {'categories':main_category.children} only %}
+    </ul>
+    {% endfor %}
+
+{% endblock %}

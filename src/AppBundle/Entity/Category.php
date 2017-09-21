@@ -13,6 +13,30 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Category
 {
     /**
+     * @param mixed $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @param mixed $isActive
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+    }
+
+    /**
+     * @param mixed $parent
+     */
+    public function setParent($parent)
+    {
+        $this->parent = $parent;
+    }
+
+    /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -33,7 +57,7 @@ class Category
 
     /**
      * One Category has Many Categories.
-     * @ORM\OneToMany(targetEntity="Category", mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="Category", mappedBy="parent", orphanRemoval=true)
      */
     private $children;
 
@@ -46,7 +70,7 @@ class Category
 
     /**
      * One Category has Many Products.
-     * @ORM\OneToMany(targetEntity="Product", mappedBy="category")
+     * @ORM\OneToMany(targetEntity="Product", mappedBy="category", orphanRemoval=true)
      */
     private $products;
 
@@ -119,6 +143,29 @@ class Category
         $this->isActive = true;
     }
 
+    public function getId() {
+        return $this->id;
+    }
+
+    public function getName() {
+        return $this->name;
+    }
+
+    public function getIsActive() {
+        return $this->isActive;
+    }
+
+    public function getParent() {
+        return $this->parent;
+    }
+
+    public function getChildren() {
+        return $this->children;
+    }
+
+    public function getProducts() {
+        return $this->products;
+    }
 
 }
 

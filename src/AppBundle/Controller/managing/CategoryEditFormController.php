@@ -16,9 +16,9 @@ use Symfony\Component\HttpFoundation\Request;
 class CategoryEditFormController extends Controller
 {
     /**
-     * @Route("/edit_category", name="edit_category")
+     * @Route("/category_edit", name="category_create")
      */
-    public function categoryEditAction(Request $request)
+    public function categoryCreateAction(Request $request)
     {
         $category = new Category();
         $form = $this->createForm(EditCategoryType::class, $category);
@@ -37,4 +37,43 @@ class CategoryEditFormController extends Controller
             array('form' => $form->createView())
         );
     }
+
+    /**
+     * @Route("/category_edit/{id}", name="category_edit", requirements={"id": "\d+"})
+     */
+    public function categoryEditAction(Request $request, $id)
+    {
+        $category = $this->getDoctrine()->getRepository(Category::class)->find($id);
+
+        $form = $this->createForm(EditCategoryType::class, $category);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($category);
+            $em->flush();
+
+            return $this->redirectToRoute('categories');
+        }
+
+        return $this->render(
+            'managing/categoryEditForm.html.twig',
+            array('form' => $form->createView())
+        );
+    }
+
+    /**
+     * @Route("/category_delete/{id}", name="category_delete", requirements={"id": "\d+"})
+     */
+    public function categoryDeleteAction(Request $request, $id)
+    {
+        $category = $this->getDoctrine()->getRepository(Category::class)->find($id);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($category);
+        $em->flush();
+
+        return $this->redirectToRoute('categories');
+    }
+
 }

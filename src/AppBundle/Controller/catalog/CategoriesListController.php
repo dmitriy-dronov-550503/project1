@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\catalog;
 
+use AppBundle\Entity\Category;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,7 +21,7 @@ class CategoriesListController extends Controller
     {
         // replace this example code with whatever you need
         return $this->render('catalog/categoriesList.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
-        ]);
+        'categories' => $this->getDoctrine()->getRepository(Category::class)->findById(1)
+        ]) ;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\catalog;
 
+use AppBundle\Entity\Category;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,8 +20,8 @@ class CategoriesListController extends Controller
     public function indexAction(Request $request)
     {
         // replace this example code with whatever you need
-        return $this->render('catalog/categoriesList.html.twig',
-        
-            );
+        return $this->render('catalog/categoriesList.html.twig', [
+        'categories' => $this->getDoctrine()->getRepository(Category::class)->findByName('Categories')
+        ]) ;
     }
 }

@@ -74,29 +74,7 @@ class Category
      */
     private $products;
 
-    /**
-     * @param mixed $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
 
-    /**
-     * @param mixed $isActive
-     */
-    public function setIsActive($isActive)
-    {
-        $this->isActive = $isActive;
-    }
-
-    /**
-     * @param mixed $parent
-     */
-    public function setParent($parent)
-    {
-        $this->parent = $parent;
-    }
 
     /**
      * @param mixed $products
@@ -143,21 +121,6 @@ class Category
         $this->isActive = true;
     }
 
-    public function getId() {
-        return $this->id;
-    }
-
-    public function getName() {
-        return $this->name;
-    }
-
-    public function getIsActive() {
-        return $this->isActive;
-    }
-
-    public function getParent() {
-        return $this->parent;
-    }
 
     public function getChildren() {
         return $this->children;

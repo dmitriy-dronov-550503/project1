@@ -1,7 +1,49 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    <style>
+        .card-columns {
+            @include media-breakpoint-only(md) {
+                column-count: 5;
+            }
+            @include media-breakpoint-only(xl) {
+                column-count: 6;
+            }
+        }
+    </style>
+    {% endblock %}
+
 {% block body %}
-<h1>Product List</h1>
+    <div class="animated-logo"></div>
+    <h1>Product List</h1>
+    <table>
+    <tr>
+        <td>
+            {% for main_category in categories %}
+                <li>{{ main_category.name }}</li>
+                <ul>
+                    {% include "includes/child-categories.html.twig" with {'categories':main_category.children} only %}
+                </ul>
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
+    <td>
+    <div class="card-columns">
+    {% for product in products %}
+        <div class="card" style="width: 20rem;">
+            <img class="card-img-top" src="http://alhayat-altayba.com/images/empty.png" alt="Card image cap">
+            <div class="card-body">
+                <h4 class="card-title">{{ product.name }}</h4>
+                <p class="card-text">{{ product.description }}</p>
+                <a href="{{ path('product_view', { 'id': product.id }) }}" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+        {% endfor %}
+        </div>
+        </td>
+        </tr>
+        </table>
 
 
-{% endblock %}
+        {% endblock %}

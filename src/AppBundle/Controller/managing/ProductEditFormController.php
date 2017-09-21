@@ -63,7 +63,7 @@ class ProductEditFormController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $this->saveChangesToDb($product);
             // there should be redirect to this product page in future:
-            return $this->redirectToRoute('product_view', array('productId' => $product->getId()));
+            return $this->redirectToRoute('product_view', array('id' => $product->getId()));
         }
 
         return $this->render(

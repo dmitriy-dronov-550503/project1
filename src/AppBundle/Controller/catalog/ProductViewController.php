@@ -36,4 +36,17 @@ class ProductViewController extends Controller
         );
     }
 
+    /**
+     * @Route("/product_view/{id}", name="product_view")
+     */
+    public function productViewIdAction(Request $request, $id)
+    {
+        $repository = $this->getDoctrine()->getRepository(Product::class);
+        $product = $repository->find($id);
+        return new Response(
+            '<h1>Product view by id: '.$id.'</h1>
+                    <h2>'.$product->getName().'</h2>
+                    <h3>'.$product->getDescription().'</h3>'
+        );
+    }
 }

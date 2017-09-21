@@ -45,7 +45,7 @@ class CategoryEditFormController extends Controller
     {
         $category = $this->getDoctrine()->getRepository(Category::class)->find($id);
 
-        $form = $this->createForm(EditCategoryType::class, $category);
+        $form = $this->createForm(EditCategoryType::class, $category, array('categoryId' => $id));
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

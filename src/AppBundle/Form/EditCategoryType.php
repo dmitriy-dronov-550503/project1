@@ -2,9 +2,14 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Controller\managing\CategoryEditFormController;
 use AppBundle\Entity\Category;
 use AppBundle\Entity\User;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use function Symfony\Component\DependencyInjection\Tests\Fixtures\factoryFunction;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,10 +22,19 @@ class EditCategoryType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this->categoryId = $options['categoryId'];
         $builder
             ->add('name', TextType::class)
             ->add('parent', EntityType::class, array(
                 'class' => 'AppBundle:Category',
+                'query_builder' => function (EntityRepository $er) {
+                    $criteria = Criteria::create()
+                        ->where(Criteria::expr()->neq('u.id', $this->categoryId))
+                        ->orderBy(array('u.id' => Criteria::ASC));
+                    return $er->createQueryBuilder('u')
+                        ->addCriteria($criteria);
+
+                },
                 'choice_label' => 'name',
             ))
         ;
@@ -30,6 +44,9 @@ class EditCategoryType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => Category::class,
+            'categoryId' => 4,
         ));
+        $resolver->setRequired('categoryId'); // Requires that currentOrg be set by the caller.
+        $resolver->setAllowedTypes('categoryId', 'string'); // Validates the type(s) of option(s) passed.
     }
 }

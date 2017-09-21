@@ -15,9 +15,9 @@ class ProductViewController extends Controller
 {
     // there should be uniq URLs for each product in Rout
     /**
-     * @Route("/product_view", name="product_view")
+     * @Route("/product/{productId}", name="product_view")
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, $productId)
     {
         // replace this example code with whatever you need
         return $this->render('catalog/productView.html.twig', [

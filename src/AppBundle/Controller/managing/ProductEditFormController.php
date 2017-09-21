@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\managing;
 
 use AppBundle\Entity\Product;
+use AppBundle\Form\EditProductType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,21 +16,26 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductEditFormController extends Controller
 {
     /**
-     * @Route("/product_edit", name="product_edit")
+     * @Route("/product/edit/{productId}", requirements={"productId" = "new|\d+"}, name="product_edit")
      */
     public function productEditAction(Request $request, $productId)
     {
         $product = $this->getDoctrine()
             ->getRepository(Product::class)
             ->find($productId);
-        $product = new Product();
         if (!$product) {
             $product = new Product();
         }
+//        $form = $this->createEditForm($request, $product);
+        $form = $this->createForm(EditProductType::class, $product);
+        $form->handleRequest($request);
 
-        $form = $this->createEditForm($request, $product);
-        $this->saveChangesToDb($product);
-
+        if ($form->isSubmitted()) {
+            $product->setDateLastChange(new \DateTime());
+            $this->saveChangesToDb($product);
+            // there should be redirect to this product page in future:
+            return $this->redirectToRoute('product_view', array('productId' => '$product->getId()'));
+        }
 
         return $this->render(
             'managing/productEditForm.html.twig',
@@ -39,12 +45,15 @@ class ProductEditFormController extends Controller
 
     private function createEditForm(Request $request, Product $product)
     {
-        $form = $this->createForm(UserType::class, $product);
+        $form = $this->createForm(EditProductType::class, $product);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $product->setDateLastChange(new \DateTime());
+            $this->saveChangesToDb($product);
             // there should be redirect to this product page in future:
-            return $this->redirectToRoute('products');
+            return $this->redirectToRoute('product_view', array('productId' => '$product->getId()'));
         }
+
         return $form;
     }
 
@@ -54,5 +63,4 @@ class ProductEditFormController extends Controller
         $em->persist($product);
         $em->flush();
     }
-
 }

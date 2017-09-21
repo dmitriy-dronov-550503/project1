@@ -10,11 +10,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="products")
  * @ORM\Entity()
  */
-class Product
+class Product implements \Serializable
 {
     /**
-     * @ORM\Column(type="integer")
      * @ORM\Id
+     * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
@@ -26,19 +26,19 @@ class Product
     private $name;
 
     /**
-     * @ORM\Column(name="description", length=1000, type="text")
+     * @ORM\Column(name="description", length=1000, type="text", options={"default" : NULL})
      */
     private $description;
 
     /**
-     * @ORM\Column(name="date_was_created", type="datetimetz")
-     * @Assert\NotBlank()
+     * @ORM\Column(name="date_was_created", type="datetimetz", options={"default" : NULL})
+     * @Assert\DateTime()
      */
     private $dateWasCreated;
 
     /**
      * @ORM\Column(name="date_last_change", type="datetimetz")
-     * @Assert\NotBlank()
+     * @Assert\DateTime()
      */
     private $dateLastChange;
 
@@ -49,9 +49,8 @@ class Product
     private $isActive;
 
     /**
-     * @ORM\Column(name="unique_identifier", type="integer")
+     * @ORM\Column(name="unique_identifier", type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
-     * @Assert\NotBlank()
      */
     private $uniqueIdentifier;
 
@@ -122,14 +121,6 @@ class Product
     }
 
     /**
-     * @param mixed $dateWasCreated
-     */
-    public function setDateWasCreated($dateWasCreated)
-    {
-        $this->dateWasCreated = $dateWasCreated;
-    }
-
-    /**
      * @return mixed
      */
     public function getDateLastChange()
@@ -151,6 +142,14 @@ class Product
     public function getisActive()
     {
         return $this->isActive;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
@@ -194,12 +193,29 @@ class Product
     }
 
     /**
-     * @return mixed
+     * @param mixed $id
      */
-    public function getId()
+    public function setId($id)
     {
-        return $this->id;
+        $this->id = $id;
     }
+
+    /**
+     * @param mixed $dateWasCreated
+     */
+    public function setDateWasCreated($dateWasCreated)
+    {
+        $this->dateWasCreated = $dateWasCreated;
+    }
+
+    /**
+     * @param mixed $uniqueIdentifier
+     */
+    public function setUniqueIdentifier($uniqueIdentifier)
+    {
+        $this->uniqueIdentifier = $uniqueIdentifier;
+    }
+
 
     /**
      * @return mixed
@@ -210,8 +226,28 @@ class Product
     }
 
     public function __construct() {
+        //$this->dateWasCreated = date('H:i:s \O\n d/m/Y');
+        $this->dateWasCreated = new \DateTime();
         $this->attributes = new \Doctrine\Common\Collections\ArrayCollection();
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
     }
+    /** @see \Serializable::serialize() */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->name,
+            $this->isActive
+        ));
+    }
 
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->name,
+            $this->isActive
+            ) = unserialize($serialized);
+    }
 }

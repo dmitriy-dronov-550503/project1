@@ -73,9 +73,56 @@ class User implements AdvancedUserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Assert\NotBlank()
      */
     private $patronymicName;
+
+    /**
+     * @return mixed
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * @param mixed $firstName
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * @param mixed $lastName
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPatronymicName()
+    {
+        return $this->patronymicName;
+    }
+
+    /**
+     * @param mixed $patronymicName
+     */
+    public function setPatronymicName($patronymicName)
+    {
+        $this->patronymicName = $patronymicName;
+    }
 
     public function __construct()
     {
@@ -167,8 +214,6 @@ class User implements AdvancedUserInterface, \Serializable
             $this->username,
             $this->password,
             $this->isActive
-            // see section on salt below
-            // $this->salt,
         ));
     }
 
@@ -180,8 +225,6 @@ class User implements AdvancedUserInterface, \Serializable
             $this->username,
             $this->password,
             $this->isActive
-            // see section on salt below
-            // $this->salt
             ) = unserialize($serialized);
     }
 }

@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class UserPageController extends Controller
 {
     /**
-     * @Route("/userpage", name="user")
+     * @Route("/userpage", name="userpage")
      */
     public function loginAction()
     {

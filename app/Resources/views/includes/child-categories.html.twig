@@ -1,5 +1,8 @@
 {% for category in categories %}
-        <li>{{ category.name }}</li>
+        <li>{{ category.name }}
+            <a href="{{ path('category_edit', { 'id': category.id }) }}" >Edit</a>
+            <a href="{{ path('category_delete', { 'id': category.id }) }}" onclick="return confirm('Are you sure?');">Delete</a>
+        </li>
         {% if category.children %}
             <ul>{% include "includes/child-categories.html.twig" with {'categories': category.children} %}
                        </ul>

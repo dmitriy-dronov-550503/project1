@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller\managing;
 
+use AppBundle\Entity\Product;
+use AppBundle\Form\EditProductType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,9 +15,20 @@ class ProductEditFormController extends Controller
      */
     public function indexAction(Request $request)
     {
-        // replace this example code with whatever you need
-        return $this->render('managing/editProductForm.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
-        ]);
+        $product = new Product();
+        $form = $this->createForm(EditProductType::class, $product);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($product);
+            $em->flush();
+
+            return $this->redirectToRoute('homepage');
+        }
+
+        return $this->render('managing/editProductForm.html.twig',
+            array('form' => $form->createView())
+        );
     }
 }

@@ -1,1 +1,10 @@
-<h1>Edit product FORM</h1>
+{{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.category) }}
+    {{ form_row(form.dateWasCreated) }}
+    {{ form_row(form.dateLastChange) }}
+    {{ form_row(form.parent) }}
+    {{ form_row(form.description) }}
+
+<button type="submit">Create product!</button>
+{{ form_end(form) }}

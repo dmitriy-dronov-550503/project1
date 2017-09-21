@@ -136,7 +136,7 @@ class Product
 
     /**
      * One Product has Many Attributes.
-     * @ORM\OneToMany(targetEntity="Attribute", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="Attribute", mappedBy="product", orphanRemoval=true)
      */
     private $attributes;
 

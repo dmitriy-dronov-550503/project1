@@ -21,7 +21,7 @@ class CategoriesListController extends Controller
     {
         // replace this example code with whatever you need
         return $this->render('catalog/categoriesList.html.twig', [
-        'categories' => $this->getDoctrine()->getRepository(Category::class)->findByName('Categories')
+        'categories' => $this->getDoctrine()->getRepository(Category::class)->findById(1)
         ]) ;
     }
 }

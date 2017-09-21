@@ -57,7 +57,7 @@ class Category
 
     /**
      * One Category has Many Categories.
-     * @ORM\OneToMany(targetEntity="Category", mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="Category", mappedBy="parent", orphanRemoval=true)
      */
     private $children;
 
@@ -70,7 +70,7 @@ class Category
 
     /**
      * One Category has Many Products.
-     * @ORM\OneToMany(targetEntity="Product", mappedBy="category")
+     * @ORM\OneToMany(targetEntity="Product", mappedBy="category", orphanRemoval=true)
      */
     private $products;
 

@@ -4,6 +4,7 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\Category;
 use AppBundle\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,7 +19,10 @@ class EditCategoryType extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
-            ->add('parent', Category::class)
+            ->add('parent', EntityType::class, array(
+                'class' => 'AppBundle:Category',
+                'choice_label' => 'name',
+            ))
         ;
     }
 

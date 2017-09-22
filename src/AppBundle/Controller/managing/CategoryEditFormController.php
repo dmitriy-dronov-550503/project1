@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 class CategoryEditFormController extends Controller
 {
     /**
-     * @Route("/category_edit", name="category_create")
+     * @Route("/category_create", name="category_create")
      */
     public function categoryCreateAction(Request $request)
     {

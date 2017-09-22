@@ -1,0 +1,12 @@
+{% for product in products %}
+    <div class="card">
+        <img class="card-img-top" src="http://alhayat-altayba.com/images/empty.png"
+             alt="Card image cap">
+        <div class="card-body">
+            <h4 class="card-title">{{ product.name }}</h4>
+            <p class="card-text">{{ product.description }}</p>
+            <a href="{{ path('product_view', { 'id': product.id }) }}" class="btn btn-primary">Go
+                somewhere</a>
+        </div>
+    </div>
+{% endfor %}

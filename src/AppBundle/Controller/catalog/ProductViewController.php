@@ -4,6 +4,7 @@ namespace AppBundle\Controller\catalog;
 
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Product;
+use function PHPSTORM_META\elementType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +14,7 @@ class ProductViewController extends Controller
 {
 
     /**
-     * @Route("/product_view", name="product_view")
+     * @Route("/product_view", name="product_ajax_view")
      */
     public function productViewAction(Request $request)
     {
@@ -26,14 +27,23 @@ class ProductViewController extends Controller
     /**
      * @Route("product_view/action", name="product_view_action")
      */
-    public function dataActrion(Request $request) {
-        return new Response(
-            'Значение переменной 1:<br/>
-            <strong>'.$request->request->get('data_1').'</strong>
-            <hr/>
-            Значение переменной 2:<br/>
-            <strong>'.$request->request->get('data_2').'</strong>'
-        );
+    public function dataAction(Request $request)
+    {
+        $repository = $this->getDoctrine()->getRepository(Product::class);
+        $data = $request->request->get('data_1');
+        $product = $repository->findOneByName($data);
+        if ($product) {
+            $response = new Response(
+                'Вы ввели:' . $data . '
+            <h1>'.$product->getName().'</h1>
+            <h2>'.$product->getDescription().'</h2>'
+            );
+        } else {
+            $response = new Response(
+                'Вы ввели:' . $data . '<p>Нет такого продукта</p>'
+            );
+        }
+        return $response;
     }
 
     /**
@@ -44,9 +54,9 @@ class ProductViewController extends Controller
         $repository = $this->getDoctrine()->getRepository(Product::class);
         $product = $repository->find($id);
         return new Response(
-            '<h1>Product view by id: '.$id.'</h1>
-                    <h2>'.$product->getName().'</h2>
-                    <h3>'.$product->getDescription().'</h3>'
+            '<h1>Product view by id: ' . $id . '</h1>
+                    <h2>' . $product->getName() . '</h2>
+                    <h3>' . $product->getDescription() . '</h3>'
         );
     }
 }

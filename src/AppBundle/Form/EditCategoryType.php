@@ -23,21 +23,32 @@ class EditCategoryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this->categoryId = $options['categoryId'];
-        $builder
-            ->add('name', TextType::class)
-            ->add('parent', EntityType::class, array(
-                'class' => 'AppBundle:Category',
-                'query_builder' => function (EntityRepository $er) {
-                    $criteria = Criteria::create()
-                        ->where(Criteria::expr()->neq('u.id', $this->categoryId))
-                        ->orderBy(array('u.id' => Criteria::ASC));
-                    return $er->createQueryBuilder('u')
-                        ->addCriteria($criteria);
+        if($this->categoryId){
+            $builder
+                ->add('name', TextType::class)
+                ->add('parent', EntityType::class, array(
+                    'class' => 'AppBundle:Category',
+                    'query_builder' => function (EntityRepository $er) {
+                        $criteria = Criteria::create()
+                            ->where(Criteria::expr()->neq('u.id', $this->categoryId))
+                            ->orderBy(array('u.id' => Criteria::ASC));
+                        return $er->createQueryBuilder('u')
+                            ->addCriteria($criteria);
 
-                },
-                'choice_label' => 'name',
-            ))
-        ;
+                    },
+                    'choice_label' => 'name',
+                ))
+            ;
+        }
+        else {
+            $builder
+                ->add('name', TextType::class)
+                ->add('parent', EntityType::class, array(
+                    'class' => 'AppBundle:Category',
+                    'choice_label' => 'name'
+                ))
+            ;
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -46,7 +57,5 @@ class EditCategoryType extends AbstractType
             'data_class' => Category::class,
             'categoryId' => 4,
         ));
-        $resolver->setRequired('categoryId'); // Requires that currentOrg be set by the caller.
-        $resolver->setAllowedTypes('categoryId', 'string'); // Validates the type(s) of option(s) passed.
     }
 }

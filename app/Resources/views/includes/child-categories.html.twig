@@ -1,5 +1,5 @@
 {% for category in categories %}
-        <li>{{ category.name }}
+    <li><a href="#" onclick="SendRequest({{ category.id }});" >{{ category.name }}</a>
             <a href="{{ path('category_edit', { 'id': category.id }) }}" >Edit</a>
             <a href="{{ path('category_delete', { 'id': category.id }) }}" onclick="return confirm('Are you sure?');">Delete</a>
         </li>

@@ -29,7 +29,7 @@ class CategoryEditFormController extends Controller
             $em->persist($category);
             $em->flush();
 
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('categories');
         }
 
         return $this->render(
@@ -44,6 +44,9 @@ class CategoryEditFormController extends Controller
     public function categoryEditAction(Request $request, $id)
     {
         $category = $this->getDoctrine()->getRepository(Category::class)->find($id);
+        if(!$category) {
+            throw $this->createNotFoundException('Not found Category with id: ' . $id);
+        }
 
         $form = $this->createForm(EditCategoryType::class, $category, array('categoryId' => $id));
 

@@ -74,7 +74,6 @@ class Product implements \Serializable
     private $children;
 
     /**
-     * Many Products have One Product.
      * @ORM\ManyToOne(targetEntity="Product", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */

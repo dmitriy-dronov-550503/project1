@@ -4,7 +4,6 @@ namespace AppBundle\Controller\managing;
 
 use AppBundle\Entity\Product;
 use AppBundle\Form\EditProductType;
-use Doctrine\ORM\Id\UuidGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductEditFormController extends Controller
 {
     /**
-     * @Route("/product/edit/{productId}", requirements={"productId" = "new|\d+"}, name="product_edit")
+     * @Route("/product/edit/{productId}", name="product_edit")
      */
     public function productEditAction(Request $request, $productId)
     {
@@ -25,9 +24,9 @@ class ProductEditFormController extends Controller
             ->getRepository(Product::class)
             ->find($productId);
         if (!$product) {
-            $product = new Product();
+            throw $this->createNotFoundException('Not found Product with id: ' . $productId);
         }
-//        $form = $this->createEditForm($request, $product);
+
         $form = $this->createForm(EditProductType::class, $product);
         $form->handleRequest($request);
 
@@ -35,8 +34,7 @@ class ProductEditFormController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $product->setDateLastChange(new \DateTime());
             $this->saveChangesToDb($product);
-            // there should be redirect to this product page in future:
-            return $this->redirectToRoute('product_view', array('productId' => '$product->getId()'));
+            return $this->redirectToRoute('product_view', array('productId' => $product->getId()));
         }
 
         return $this->render(
@@ -53,16 +51,13 @@ class ProductEditFormController extends Controller
         $product = new Product();
         $product->setDateWasCreated(new \DateTime());
         $product->setDateLastChange(new \DateTime());
-        $em = $this->getDoctrine()->getEntityManager();
-        $uuid = new UuidGenerator();
-        $uuid->generate($em, $product);
-        $form = $this->createForm(EditProductType::class, $product);
 
+        $form = $this->createForm(EditProductType::class, $product);
         $form->handleRequest($request);
+
         if(!$form->isValid()) echo $form->getErrors();
         if ($form->isSubmitted() && $form->isValid()) {
             $this->saveChangesToDb($product);
-            // there should be redirect to this product page in future:
             return $this->redirectToRoute('product_view', array('id' => $product->getId()));
         }
 

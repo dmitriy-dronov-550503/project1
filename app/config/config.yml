@@ -62,6 +62,9 @@ doctrine:
                 dir: '%kernel.root_dir%/../src/AppBundle/Entity/'
                 prefix: AppBundle\Entity
                 alias: AppBundle
+
+
+
 # Swiftmailer Configuration
 swiftmailer:
     transport: '%mailer_transport%'

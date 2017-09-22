@@ -39,7 +39,7 @@ class CategoryEditFormController extends Controller
     }
 
     /**
-     * @Route("/category_edit/{id}", name="category_edit", requirements={"id": "\d+"})
+     * @Route("/category_edit/{id}", name="category_edit2", requirements={"id": "\d+"})
      */
     public function categoryEditAction(Request $request, $id)
     {
@@ -63,7 +63,7 @@ class CategoryEditFormController extends Controller
     }
 
     /**
-     * @Route("/category_delete/{id}", name="category_delete", requirements={"id": "\d+"})
+     * @Route("/category_delete/{id}", name="category_delete2", requirements={"id": "\d+"})
      */
     public function categoryDeleteAction(Request $request, $id)
     {

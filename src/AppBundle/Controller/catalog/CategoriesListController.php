@@ -5,9 +5,12 @@ namespace AppBundle\Controller\catalog;
 use AppBundle\Entity\Category;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * Class CategoriesListController
@@ -16,14 +19,11 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CategoriesListController extends Controller
 {
-    private $modified;
-
     /**
      * @Route("/categories", name="categories")
      */
     public function indexAction(Request $request)
     {
-        $this->modified = new ArrayCollection();
         // replace this example code with whatever you need
         return $this->render('catalog/categoriesList.html.twig');
     }
@@ -53,14 +53,13 @@ class CategoriesListController extends Controller
         return $temp;
     }
 
-
     /**
      * @Route("/categories/save", name="category_change_parent")
      */
     public function changeParentAction(Request $request)
     {
-        $repository = $this->getDoctrine()->getRepository(Category::class);
         $em = $this->getDoctrine()->getManager();
+        $repository = $this->getDoctrine()->getRepository(Category::class);
         $node = $repository->find($request->request->get('node'));
         $parent = $repository->find($request->request->get('parent'));
         if ($node->getParent() != $parent) {
@@ -72,14 +71,26 @@ class CategoriesListController extends Controller
             '</h5></br><h5>Parent: ' . $parent->getName() . '</h5>');
     }
 
+    /**
+     * @Route("categories/flush", name="category_flush")
+     */
+    public function flushAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+        if($request->request->get('save') === 'true'){
+            $em->flush();
+        }
+        return new Response('<h5>Changes saved</h5>');
+    }
 
     /**
      * @Route("/categories/add", name="category_add")
      */
     public function addCategoryAction(Request $request)
     {
-        $repository = $this->getDoctrine()->getRepository(Category::class);
         $em = $this->getDoctrine()->getManager();
+        $repository = $this->getDoctrine()->getRepository(Category::class);
         $parent = $repository->find($request->request->get('parent'));
         $node = new Category();
         $node->setName($request->request->get('name'));
@@ -94,8 +105,8 @@ class CategoriesListController extends Controller
      */
     public function deleteCategoryAction(Request $request)
     {
-        $repository = $this->getDoctrine()->getRepository(Category::class);
         $em = $this->getDoctrine()->getManager();
+        $repository = $this->getDoctrine()->getRepository(Category::class);
         $node = $repository->find($request->request->get('node'));
         if($node){
             $em->remove($node);
@@ -109,9 +120,8 @@ class CategoriesListController extends Controller
      */
     public function renameCategory(Request $request)
     {
-        $repository = $this->getDoctrine()->getRepository(Category::class);
         $em = $this->getDoctrine()->getManager();
-
+        $repository = $this->getDoctrine()->getRepository(Category::class);
         $node = $repository->find($request->request->get('node'));
         if($node->getName()!=$request->request->get('title')){
             $node->setName($request->request->get('title'));

@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\catalog;
 
 use AppBundle\Entity\Category;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,11 +16,14 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CategoriesListController extends Controller
 {
+    private $modified;
+
     /**
      * @Route("/categories", name="categories")
      */
     public function indexAction(Request $request)
     {
+        $this->modified = new ArrayCollection();
         // replace this example code with whatever you need
         return $this->render('catalog/categoriesList.html.twig');
     }
@@ -49,6 +53,7 @@ class CategoriesListController extends Controller
         return $temp;
     }
 
+
     /**
      * @Route("/categories/save", name="category_change_parent")
      */
@@ -66,6 +71,7 @@ class CategoriesListController extends Controller
         return new Response('<h5>Node: ' . $node->getName() .
             '</h5></br><h5>Parent: ' . $parent->getName() . '</h5>');
     }
+
 
     /**
      * @Route("/categories/add", name="category_add")

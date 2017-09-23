@@ -27,7 +27,7 @@ class ProductEditFormController extends Controller
         $em = $this->getDoctrine()->getManager();
         $product = $em->getRepository(Product::class)->find($productId);
         if (!$product) {
-            throw $this->createNotFoundException('No product found for id '.$productId);
+            throw $this->createNotFoundException('No product found for id ' . $productId);
         }
 
         $originalAttributes = new ArrayCollection();
@@ -35,13 +35,17 @@ class ProductEditFormController extends Controller
             $originalAttributes->add($attribute);
         }
 
-        $product->setImage(
-            new File($this->getParameter('images_directory').'/'.$product->getImage())
-        );
+        $isImage = $product->getImage();
+        if ($isImage) {
+            $product->setImage(
+                new File($this->getParameter('images_directory') . '/' . $product->getImage())
+            );
+        }
+
 
         $form = $this->createForm(EditProductType::class, $product);
         $form->handleRequest($request);
-        if($form->isSubmitted() && !$form->isValid()) echo $form->getErrors();
+        if ($form->isSubmitted() && !$form->isValid()) echo $form->getErrors();
         if ($form->isSubmitted() && $form->isValid()) {
             foreach ($originalAttributes as $attribute) {
                 if (false === $product->getAttributes()->contains($attribute)) {
@@ -49,6 +53,18 @@ class ProductEditFormController extends Controller
                     $em->remove($attribute);
                 }
             }
+
+            if(!$isImage){
+                /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
+                $file = $product->getImage();
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                $file->move(
+                    $this->getParameter('images_directory'),
+                    $fileName
+                );
+                $product->setImage($fileName);
+            }
+
             $product->setDateLastChange(new \DateTime());
             $em->persist($product);
             $em->flush();
@@ -76,12 +92,12 @@ class ProductEditFormController extends Controller
         $form = $this->createForm(EditProductType::class, $product);
 
         $form->handleRequest($request);
-        if($form->isSubmitted() && !$form->isValid()) echo $form->getErrors();
+        if ($form->isSubmitted() && !$form->isValid()) echo $form->getErrors();
         if ($form->isSubmitted() && $form->isValid()) {
 
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
             $file = $product->getImage();
-            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
             $file->move(
                 $this->getParameter('images_directory'),
                 $fileName

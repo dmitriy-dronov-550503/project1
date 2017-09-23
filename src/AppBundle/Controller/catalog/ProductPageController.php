@@ -16,16 +16,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ProductPage extends Controller
+class ProductPageController extends Controller
 {
     /**
-     * @Route("/product_view/{id}", name="product_ajax_view", requirements={"id": "/+d"})
+     * @Route("/product_page/{id}", name="product_page", requirements={"id": "\d+"})
      */
     public function productViewAction(Request $request, $id)
     {
-        //$repository = $this->getDoctrine()->getRepository(Product::class);
-        // replace this example code with whatever you need
-        return $this->render('catalog/productView.html.twig'
+        $repository = $this->getDoctrine()->getRepository(Product::class);
+        $product = $repository->find($id);
+        return $this->render('catalog/productPage.html.twig', [
+            'product' => $product,
+                'attributes' => $product->getAttributes()
+            ]
         );
     }
 }

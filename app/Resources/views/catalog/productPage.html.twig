@@ -2,6 +2,22 @@
 
 {% block body %}
     <h1>{{ product.name }}</h1>
-    <img src="/images/{{ product.sku }}.jpg">
+    <img src="/images/{{ product.uniqueIdentifier }}.jpg">
     <h4>{{ product.description }}</h4>
+    <table class="table table-sm">
+        <thead>
+        <tr>
+            <th>Feature</th>
+            <th>Value</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for attribute in attributes %}
+        <tr>
+            <th scope="row">{{ attribute.name }}</th>
+            <td>{{ attribute.value }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

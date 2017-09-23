@@ -11,7 +11,7 @@
                 <p class="card-text">{{ product.description }}</p>
             </div>
             <div class="card-footer">
-                <a href="{{ path('homepage') }}" class="card-link"><small>Details</small></a>
+                <a href="{{ path('product_page',  {'id': product.id}) }}" class="card-link"><small>Details</small></a>
             </div>
         </div>
 

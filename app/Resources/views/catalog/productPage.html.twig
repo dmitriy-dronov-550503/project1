@@ -1,0 +1,7 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{ product.name }}</h1>
+    <img src="/images/{{ product.sku }}.jpg">
+    <h4>{{ product.description }}</h4>
+{% endblock %}

@@ -25,46 +25,6 @@ class CategoriesListController extends Controller
     }
 
     /**
-     * @Route("/categories/get_category_root", name="get_category_root")
-     */
-    public function getCategoryRootAction(Request $request)
-    {
-        $category = $this->getDoctrine()->getRepository(Category::class)->find(1);
-        $categories = $this->getCategoryBranch($category);
-        $json = json_encode($categories);
-        $response = new Response($json);
-        return $response;
-    }
-
-    /**
-     * @Route("/categories/get_category_branch", name="get_category_branch")
-     */
-    public function getCategoryBranchAction(Request $request)
-    {
-        $id = $request->get('key');
-        $category = $this->getDoctrine()->getRepository(Category::class)->find($id);
-        $json = json_encode($this->getCategoryBranch($category));
-        $response = new Response($json);
-        return $response;
-    }
-
-    private function getCategoryBranch($category)
-    {
-        $temp = array();
-        if ($category->getChildren()) {
-            foreach ($category->getChildren() as $child) {
-                array_push($temp, array(
-                    "title" => $child->getName(),
-                    "key" => $child->getId(),
-                    "isLazy" => $child->getChildren()!=null?true:false
-                ));
-            }
-        }
-        return $temp;
-    }
-
-
-    /**
      * @Route("/categories/get_category_tree", name="get_category_tree")
      */
     public function getCategoryTreeAction(Request $request)
@@ -145,10 +105,11 @@ class CategoriesListController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $node = $repository->find($request->request->get('node'));
-
-        $node->setName($request->request->get('title'));
-        $em->persist($node);
-        $em->flush();
+        if($node->getName()!=$request->request->get('title')){
+            $node->setName($request->request->get('title'));
+            $em->persist($node);
+            $em->flush();
+        }
 
         return new Response('<h5>New node name: ' . $node->getName());
     }

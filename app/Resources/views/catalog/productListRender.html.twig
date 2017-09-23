@@ -2,15 +2,18 @@
     <h1>No items</h1>
 {% else %}
     {% for product in products %}
-        <div class="card">
-            <img class="card-img-top" src="http://alhayat-altayba.com/images/empty.png"
-                 alt="Card image cap">
+
+        <div class="card" style="max-width: 20rem; min-width: 10rem;">
+            <img class="card-img-top" src="http://www.azspagirls.com/files/2010/09/orange.jpg" onclick="createViewModal('{{ product.id }}')" data-toggle="modal"
+                 data-target=".bd-example-modal-lg" alt="Card image cap">
             <div class="card-body">
                 <h4 class="card-title">{{ product.name }}</h4>
                 <p class="card-text">{{ product.description }}</p>
-                <a href="{{ path('product_view', { 'id': product.id }) }}" class="btn btn-primary">Go
-                    somewhere</a>
+            </div>
+            <div class="card-footer">
+                <a href="{{ path('homepage') }}" class="card-link"><small>Details</small></a>
             </div>
         </div>
+
     {% endfor %}
 {% endif %}

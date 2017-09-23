@@ -2,12 +2,12 @@
 
 {% block javascripts %}
     <!-- Include the required JavaScript libraries: -->
-    <script src="{{ asset('dyntree/jquery/jquery.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('dyntree/jquery/jquery-ui.custom.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('dyntree/jquery/jquery.cookie.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('dynatree/jquery/jquery.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('dynatree/jquery/jquery-ui.custom.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('dynatree/jquery/jquery.cookie.js') }}" type="text/javascript"></script>
 
-    <link rel="stylesheet" type="text/css" href="{{ asset('dyntree/src/skin/ui.dynatree.css') }}">
-    <script src="{{ asset('dyntree/src/jquery.dynatree.js') }}" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('dynatree/src/skin/ui.dynatree.css') }}">
+    <script src="{{ asset('dynatree/src/jquery.dynatree.js') }}" type="text/javascript"></script>
 
     <!-- Add code to initialize the tree when the document is loaded: -->
     <script type="text/javascript">
@@ -18,16 +18,16 @@
                 },
                 //persist: true,
                 initAjax: {
-                    url: "{{ path('get_category_branch') }}",
-                    data: {key: "1", // Optional arguments to append to the url
+                    url: "{{ path('get_category_tree') }}",
+                    data: {key: "1",
                     }
                 },
-                onLazyRead: function(node){
+                /*onLazyRead: function(node){
                     node.appendAjax({url: "{{ path('get_category_branch') }}",
-                        data: {"key": node.data.key, // Optional url arguments
+                        data: {"key": node.data.key,
                         }
                     });
-                },
+                },*/
                 selectMode: 3,
                 dnd: {
                     onDragStart: function (node) {
@@ -96,16 +96,16 @@
             });
         });
 
-        /*window.onload = function() {
+        window.onload = function() {
             $("#tree").dynatree("getRoot").visit(function(node){
                 node.expand(true);
             });
-        };*/
+        };
 
         function addNode() {
             var node = $("#tree").dynatree("getActiveNode");
-            $("#tree").dynatree("getActiveNode").expand(true);
             if (!node) node = $("#tree").dynatree("getRoot");
+            $("#tree").dynatree("getActiveNode").expand(true);
             var childNode = node.addChild({
                 title: "New node",
                 tooltip: "This folder and all child nodes were added programmatically."
@@ -121,15 +121,17 @@
         }
         function deleteNode() {
             var node = $("#tree").dynatree("getActiveNode");
-            $.ajax({
-                type: "POST",
-                url: "{{ path('category_delete') }}",
-                data: "node=" + node.data.key,
-                success: function (response) {
-                    $('#response').html(response);
-                }
-            });
-            node.remove();
+            if (confirm("Are you sure?") === true) {
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path('category_delete') }}",
+                    data: "node=" + node.data.key,
+                    success: function (response) {
+                        $('#response').html(response);
+                    }
+                });
+                node.remove();
+            }
             return true;
         }
     </script>
@@ -215,11 +217,23 @@
 
 
 
-    <h1>Category List</h1>
-    <div id="tree"></div>
-    <input type="button" onclick="SaveCategories()" value="Save">
-    <input type="button" onclick="deleteNode()" value="Delete">
-    <input type="button" onclick="addNode()" value="Add">
-    <h5 id="response"></h5>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 d-none d-sm-block bg-light">
+                <h4>Edit categories</h4>
+                <h7><p>Drag and drop category to change parent.</p>
+                    <p>Double click to rename. Press enter to save.</p></h7>
+                <h5 id="response"></h5>
+            </div>
+            <div id="tree" class="col-sm-9 ml-sm-auto col-md-10 pt-3"></div>
+            <div class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+                <input type="button" onclick="deleteNode()" value="Delete">
+                <input type="button" onclick="addNode()" value="Add">
+            </div>
+        </div>
+    </div>
+
+
+
 
 {% endblock %}

@@ -1,24 +1,13 @@
-{% extends 'base.html.twig' %}
-
-{% block javascripts %}
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
-    <script type="text/javascript">
-        function SendRequest() {
-            $.ajax({
-                type: "POST",
-                url: "{{ path('product_view_action') }}",
-                data: "data_1=" + $('#data_1').val(),
-                success: function (response) {
-                    $('#response').html(response);
-                }
-            });
-        };
-    </script>
-{% endblock %}
-
-{% block body %}
-    <h1>Product View</h1>
-    <label>Введите имя продукта: <input type="text" size="10" id="data_1"/></label><br/>
-    <button onclick="SendRequest();">Послать запрос</button>
-    <div id="response"></div>
-{% endblock %}
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">{{ product.name }}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    {{ product.description }}
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-primary">Buy</button>
+</div>

@@ -105,7 +105,10 @@
 
         function addNode() {
             var node = $("#tree").dynatree("getActiveNode");
-            if (!node) node = $("#tree").dynatree("getRoot");
+            if (!node) {
+                node = $("#tree").dynatree("getRoot");
+                node.data.key = "1";
+            }
             node.expand(true);
             var childNode = node.addChild({
                 title: "New node",
@@ -237,8 +240,8 @@
                 <div id="tree"></div>
             </div>
             <div class="col-sm-9 ml-sm-auto col-md-10 pt-3">
-                {#<input type="button" class="btn btn-success" onclick="addNode()" value="New category">#}
-                <input type="button" class="btn btn-success" onclick="saveChanges()" value="Save changes">
+                <input type="button" class="btn btn-success" onclick="addNode()" value="New category">
+                {#<input type="button" class="btn btn-success" onclick="saveChanges()" value="Save changes">#}
                 <input type="button" class="btn btn-danger" onclick="deleteNode()" value="Delete">
             </div>
         </div>

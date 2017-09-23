@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Attribute
 {
+
     /**
      * @return mixed
      */
@@ -74,13 +75,13 @@ class Attribute
     private $product;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=255, unique=false)
      * @Assert\NotBlank()
      */
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=255, unique=false)
      * @Assert\NotBlank()
      */
     private $value;

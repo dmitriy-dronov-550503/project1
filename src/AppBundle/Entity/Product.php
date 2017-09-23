@@ -13,6 +13,17 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Product implements \Serializable
 {
+    public function addAttribute(Attribute $attr)
+    {
+        $attr->setProduct($this);
+        $this->attributes->add($attr);
+    }
+
+    public function removeAttribute(Attribute $attr)
+    {
+        $this->attributes->removeElement($attr);
+    }
+
     /**
      * @return mixed
      */
@@ -71,7 +82,7 @@ class Product implements \Serializable
 
     /**
      * One Product has Many Attributes.
-     * @ORM\OneToMany(targetEntity="Attribute", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="Attribute", mappedBy="product", cascade={"persist"})
      */
     private $attributes;
 

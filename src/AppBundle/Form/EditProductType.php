@@ -2,8 +2,13 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\Attribute;
 use AppBundle\Entity\Product;
+use AppBundle\Form\AttributeType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -20,6 +25,13 @@ class EditProductType extends AbstractType
             ->add('category', EntityType::class, array(
                 'class' => 'AppBundle:Category',
                 'choice_label' => 'name',
+            ))
+            ->add('attributes', CollectionType::class, array(
+                'entry_type' => AttributeType::class,
+                'entry_options' => array('label' => false),
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
             ))
         ;
     }

@@ -91,8 +91,10 @@ class CategoriesListController extends Controller
         $repository = $this->getDoctrine()->getRepository(Category::class);
         $em = $this->getDoctrine()->getManager();
         $node = $repository->find($request->request->get('node'));
-        $em->remove($node);
-        $em->flush();
+        if($node){
+            $em->remove($node);
+            $em->flush();
+        }
         return new Response('OK');
     }
 

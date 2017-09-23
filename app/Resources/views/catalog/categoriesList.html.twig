@@ -19,15 +19,16 @@
                 //persist: true,
                 initAjax: {
                     url: "{{ path('get_category_tree') }}",
-                    data: {key: "1",
+                    data: {
+                        key: "1",
                     }
                 },
                 /*onLazyRead: function(node){
-                    node.appendAjax({url: "{{ path('get_category_branch') }}",
-                        data: {"key": node.data.key,
-                        }
-                    });
-                },*/
+                 node.appendAjax({url: "{{ path('get_category_branch') }}",
+                 data: {"key": node.data.key,
+                 }
+                 });
+                 },*/
                 selectMode: 3,
                 dnd: {
                     onDragStart: function (node) {
@@ -41,7 +42,7 @@
                         // This function is optional.
                         logMsg("tree.onDragStop(%o)", node);
                         var parentId = node.parent.data.key;
-                        if(parentId==='_1') parentId='1';
+                        if (parentId === '_1') parentId = '1';
                         $.ajax({
                             type: "POST",
                             url: "{{ path('category_change_parent') }}",
@@ -96,8 +97,8 @@
             });
         });
 
-        window.onload = function() {
-            $("#tree").dynatree("getRoot").visit(function(node){
+        window.onload = function () {
+            $("#tree").dynatree("getRoot").visit(function (node) {
                 node.expand(true);
             });
         };
@@ -105,7 +106,7 @@
         function addNode() {
             var node = $("#tree").dynatree("getActiveNode");
             if (!node) node = $("#tree").dynatree("getRoot");
-            $("#tree").dynatree("getActiveNode").expand(true);
+            node.expand(true);
             var childNode = node.addChild({
                 title: "New node",
                 tooltip: "This folder and all child nodes were added programmatically."
@@ -214,9 +215,6 @@
 {% endblock %}
 
 {% block body %}
-
-
-
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-3 col-md-2 d-none d-sm-block bg-light">
@@ -225,15 +223,13 @@
                     <p>Double click to rename. Press enter to save.</p></h7>
                 <h5 id="response"></h5>
             </div>
-            <div id="tree" class="col-sm-9 ml-sm-auto col-md-10 pt-3"></div>
             <div class="col-sm-9 ml-sm-auto col-md-10 pt-3">
-                <input type="button" onclick="deleteNode()" value="Delete">
-                <input type="button" onclick="addNode()" value="Add">
+                <div id="tree"></div>
+            </div>
+            <div class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+                <input type="button" class="btn btn-success" onclick="addNode()" value="New category">
+                <input type="button" class="btn btn-danger" onclick="deleteNode()" value="Delete">
             </div>
         </div>
     </div>
-
-
-
-
 {% endblock %}

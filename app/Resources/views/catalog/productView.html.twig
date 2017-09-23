@@ -5,7 +5,8 @@
     </button>
 </div>
 <div class="modal-body">
-    {{ product.description }}
+    <img src="{{ asset('uploads/images/' ~ product.image) }}">
+    <p>{{ product.description }}</p>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

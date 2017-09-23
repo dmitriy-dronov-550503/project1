@@ -3,8 +3,8 @@
 {% else %}
     {% for product in products %}
 
-        <div class="card" style="max-width: 20rem; min-width: 10rem;">
-            <img class="card-img-top" src="http://www.azspagirls.com/files/2010/09/orange.jpg" onclick="createViewModal('{{ product.id }}')" data-toggle="modal"
+        <div class="card" style="width: 20rem; min-width: 15rem;">
+            <img class="card-img-top" src="{{ asset('uploads/images/' ~ product.image) }}" onclick="createViewModal('{{ product.id }}')" data-toggle="modal"
                  data-target=".bd-example-modal-lg" alt="Card image cap">
             <div class="card-body">
                 <h4 class="card-title">{{ product.name }}</h4>
@@ -12,6 +12,7 @@
             </div>
             <div class="card-footer">
                 <a href="{{ path('product_page',  {'id': product.id}) }}" class="card-link"><small>Details</small></a>
+                <a href="{{ path('product_edit',  {'productId': product.id}) }}" class="card-link"><small>Edit</small></a>
             </div>
         </div>
 

@@ -2,7 +2,7 @@
 
 {% block body %}
     <h1>{{ product.name }}</h1>
-    <img src="/images/{{ product.uniqueIdentifier }}.jpg">
+    <img src="{{ asset('uploads/images/' ~ product.image) }}">
     <h4>{{ product.description }}</h4>
     <table class="table table-sm">
         <thead>

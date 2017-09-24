@@ -14,10 +14,57 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="users")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  */
 class User implements AdvancedUserInterface, \Serializable
 {
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getisActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param mixed $isActive
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    /**
+     * @param mixed $role
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
+    }
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -212,6 +259,7 @@ class User implements AdvancedUserInterface, \Serializable
         return serialize(array(
             $this->id,
             $this->username,
+            $this->email,
             $this->password,
             $this->isActive
         ));
@@ -223,8 +271,11 @@ class User implements AdvancedUserInterface, \Serializable
         list (
             $this->id,
             $this->username,
+            $this->email,
             $this->password,
             $this->isActive
             ) = unserialize($serialized);
     }
+
+
 }

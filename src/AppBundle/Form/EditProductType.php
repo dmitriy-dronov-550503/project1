@@ -29,7 +29,7 @@ class EditProductType extends AbstractType
             ))
             ->add('attributes', CollectionType::class, array(
                 'entry_type' => AttributeType::class,
-                'entry_options' => array('label' => false),
+                'label' => false,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,

@@ -1,4 +1,57 @@
-{{ form_start(form) }}
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block captcha %}
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <form name="registration" method="post" action="{{ path('register') }}">
+                    <div class="form-group row">
+                        <label for="registration_email">Email</label>
+                        <input type="email" id="registration_email" name="registration[email]" class="form-control" aria-describedby="emailHelp" placeholder="Enter email">
+                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                    </div>
+                    <div class="form-group row">
+                        <label for="username">Username</label>
+                        {{ form_widget(form.username, {'attr':{'class': 'form-control', 'placeholder': 'Username'}}) }}
+                    </div>
+                    <div class="form-group row">
+                        <label for="password">Password</label>
+                        {{ form_widget(form.plainPassword.first, {'attr':{'class': 'form-control', 'placeholder': 'Password'}}) }}
+                    </div>
+                    <div class="form-group row">
+                        <label for="password">Repeat password</label>
+                        {{ form_widget(form.plainPassword.second, {'attr':{'class': 'form-control', 'placeholder': 'Repeat password'}}) }}
+                    </div>
+                    <div class="form-group row">
+                        <label for="firstName">First name</label>
+                        {{ form_widget(form.firstName, {'attr':{'class': 'form-control', 'placeholder': 'First name'}}) }}
+                    </div>
+                    <div class="form-group row">
+                        <label for="lastName">Last name</label>
+                        {{ form_widget(form.lastName, {'attr':{'class': 'form-control', 'placeholder': 'Last name'}}) }}
+                    </div>
+                    <div class="form-group row">
+                        <label for="patronymicName">Patronymic</label>
+                        {{ form_widget(form.patronymicName, {'attr':{'class': 'form-control', 'placeholder': 'Patronymic name'}}) }}
+                    </div>
+                    <div class="g-recaptcha" data-sitekey="6Lek5TEUAAAAAL9GJa3eJWEhDRwXNAMmSxH-mBi9"></div>
+                    {{ form_row(form._token) }}
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{#
+    {{ form_start(form) }}
     {{ form_row(form.username) }}
     {{ form_row(form.email) }}
     {{ form_row(form.plainPassword.first) }}
@@ -7,5 +60,11 @@
     {{ form_row(form.lastName) }}
     {{ form_row(form.patronymicName) }}
 
-<button type="submit">Register!</button>
-{{ form_end(form) }}
+    <button type="submit">Register!</button>
+    {{ form_end(form) }}
+
+    #}
+{% endblock %}
+
+
+

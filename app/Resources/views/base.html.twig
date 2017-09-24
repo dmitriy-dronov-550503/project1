@@ -24,6 +24,7 @@
             border-top: .05rem solid #e5e5e5;
         }
     </style>
+    {% block captcha %}{% endblock %}
 </head>
 <body>
 
@@ -49,6 +50,9 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('register') }}">Sign up</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('logout') }}">Logout</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

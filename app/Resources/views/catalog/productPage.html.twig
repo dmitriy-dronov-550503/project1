@@ -1,23 +1,52 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    <style>
+        .container {
+            background-color: #dfdfdf;
+            padding: 1.5rem;
+            border-color: black;
+            border: 10px;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-    <h1>{{ product.name }}</h1>
-    <img src="{{ asset('uploads/images/' ~ product.image) }}">
-    <h4>{{ product.description }}</h4>
-    <table class="table table-sm">
-        <thead>
-        <tr>
-            <th>Feature</th>
-            <th>Value</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for attribute in attributes %}
-        <tr>
-            <th scope="row">{{ attribute.name }}</th>
-            <td>{{ attribute.value }}</td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="container">
+    <div class="row justify-content-left" style="margin-bottom: 1rem;">
+        <div class="col-auto">
+            <h1>{{ product.name }}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <img class="rounded" style="width: 100%" src="{{ asset('uploads/images/' ~ product.image) }}">
+        </div>
+        <div class="col-5">
+            <div class="row">
+                <h5><p>Description:</p></h5>
+                <h7><p>{{ product.description }}</p></h7>
+            </div>
+            <div class="row">
+                <table class="table table-sm">
+                    <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for attribute in attributes %}
+                        <tr>
+                            <th scope="row">{{ attribute.name }}</th>
+                            <td>{{ attribute.value }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
 {% endblock %}

@@ -14,19 +14,24 @@
                 onActivate: function (node) {
                     SendRequest(node.data.key);
                 },
-
                 //persist: true,
                 initAjax: {
                     url: "{{ path('get_category_branch') }}",
-                    data: {key: "1",
+                    data: {
+                        key: "1"
                     }
                 },
-                onLazyRead: function(node){
-                 node.appendAjax({url: "{{ path('get_category_branch') }}",
-                 data: {"key": node.data.key,
-                 }
-                 });
-                 },
+                onLazyRead: function (node) {
+                    node.appendAjax({
+                        url: "{{ path('get_category_branch') }}",
+                        data: {
+                            "key": node.data.key
+                        }
+                    });
+                }
+            });
+            $(window).load(function() {
+                $("#tree").dynatree("getRoot").getChildren()[0].activate(true);
             });
         });
     </script>
@@ -51,11 +56,10 @@
                 }
             });
         }
-
     </script>
     <script>
-        $(document).ready(function(){
-            $("#btnOpenModal").click(function(){
+        $(document).ready(function () {
+            $("#btnOpenModal").click(function () {
                 $("#myModal").modal();
             });
         });
@@ -64,39 +68,49 @@
 
 {% block body %}
     <style>
-        .sidebar {
-            position: fixed;
-            top: 51px;
-            bottom: 0;
-            left: 0;
-            z-index: 1000;
-            padding: 20px;
-            overflow-x: hidden;
-            overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-            border-right: 1px solid #eee;
-        }
 
-        /* Sidebar navigation */
-        .sidebar {
-            padding-left: 0;
-            padding-right: 0;
-        }
         .card-text {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
         .card {
             margin-bottom: 1.5rem;
         }
-    </style>
 
+        .imageContainer {
+            position: relative;
+            overflow: hidden;
+            padding-bottom: 100%;
+        }
+
+        .imageContainer img {
+            position: absolute;
+        }
+
+
+
+    </style>
     <div class="container-fluid">
         <div class="row">
-            <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
-                <div id="tree"></div>
+            <nav class="col-sm-3 col-md-2 d-flex bg-light sidebar">
+                <ul class="nav nav-pills flex-column">
+                    <li class="nav-item">
+                        <div id="tree"></div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('product_create') }}">Create product</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">some link</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">render filters</a>
+                    </li>
+                </ul>
             </nav>
-            <main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
+            <main class="col-sm-9 ml-sm-auto col-md-10 pt-3 d-flex" role="main">
                 <div class="container">
                     <div id="response" class="row card-deck"></div>
                 </div>
@@ -104,14 +118,13 @@
         </div>
     </div>
 
-        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content" id="myModal">
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" id="myModal">
 
-                </div>
             </div>
         </div>
-
-
-
+    </div>
 {% endblock %}
+

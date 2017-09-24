@@ -18,18 +18,8 @@
                 },
                 //persist: true,
                 initAjax: {
-                    url: "{{ path('get_category_tree') }}",
-                    data: {
-                        key: "1",
-                    }
+                    url: "{{ path('get_category_tree') }}"
                 },
-                /*onLazyRead: function(node){
-                 node.appendAjax({url: "{{ path('get_category_branch') }}",
-                 data: {"key": node.data.key,
-                 }
-                 });
-                 },*/
-                selectMode: 3,
                 dnd: {
                     onDragStart: function (node) {
                         /** This function MUST be defined to enable dragging for the tree.
@@ -95,6 +85,15 @@
                     }
                 }
             });
+            $("#parentTree").dynatree({
+                onActivate: function (node) {
+                    $('#renamedValue').val(node.data.title);
+                },
+                //persist: true,
+                initAjax: {
+                    url: "{{ path('get_category_tree') }}"
+                }
+            });
         });
 
         window.onload = function () {
@@ -138,15 +137,24 @@
             }
             return true;
         }
-        function saveChanges() {
+        var editNodeKey;
+        function editForm() {
+            var node = $("#tree").dynatree("getActiveNode");
+            $('#editCategoryName').val(node.data.title);
+            editNodeKey = node;
+        }
+        function saveForm() {
+            var node = $("#parentTree").dynatree("getActiveNode");
+            if(!node) node=editNodeKey.parent;
             $.ajax({
                 type: "POST",
-                url: "{{ path('category_flush') }}",
-                data: "save=" + "true",
+                url: "{{ path('category_edit') }}",
+                data: "node=" + editNodeKey.data.key + "&parent=" + node.data.key + "&title=" + $('#editCategoryName').val(),
                 success: function (response) {
-                    $('#response').html(response);
+                    $('#editModalBody').html(response);
                 }
             });
+            location.reload();
         }
     </script>
 
@@ -240,9 +248,38 @@
                 <div id="tree"></div>
             </div>
             <div class="col-sm-9 ml-sm-auto col-md-10 pt-3">
-                <input type="button" class="btn btn-success" onclick="addNode()" value="New category">
-                {#<input type="button" class="btn btn-success" onclick="saveChanges()" value="Save changes">#}
-                <input type="button" class="btn btn-danger" onclick="deleteNode()" value="Delete">
+                <button type="button" class="btn btn-success" onclick="addNode()">New category</button>
+                <button type="button" class="btn btn-warning" onclick="editForm()" data-toggle="modal" data-target="#editModal">Edit</button>
+                <button type="button" class="btn btn-danger" onclick="deleteNode()">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="editModalBody">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Category name:</label>
+                            <input type="text" class="form-control" id="editCategoryName" placeholder="Enter category name">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Choose parent:</label>
+                            <div id="parentTree"></div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="saveForm()">Save changes</button>
+                </div>
             </div>
         </div>
     </div>

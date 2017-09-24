@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\catalog;
 
 use AppBundle\Entity\Category;
+use AppBundle\Form\EditCategoryType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -60,14 +61,14 @@ class CategoriesListController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $repository = $this->getDoctrine()->getRepository(Category::class);
-        $node = $repository->find($request->request->get('node'));
+        $category = $repository->find($request->request->get('node'));
         $parent = $repository->find($request->request->get('parent'));
-        if ($node->getParent() != $parent) {
-            $node->setParent($parent);
-            $em->persist($node);
+        if ($category->getParent() != $parent) {
+            $category->setParent($parent);
+            $em->persist($category);
             $em->flush();
         }
-        return new Response('<h5>Node: ' . $node->getName() .
+        return new Response('<h5>Node: ' . $category->getName() .
             '</h5></br><h5>Parent: ' . $parent->getName() . '</h5>');
     }
 
@@ -78,7 +79,7 @@ class CategoriesListController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $em->flush();
-        if($request->request->get('save') === 'true'){
+        if ($request->request->get('save') === 'true') {
             $em->flush();
         }
         return new Response('<h5>Changes saved</h5>');
@@ -92,12 +93,12 @@ class CategoriesListController extends Controller
         $em = $this->getDoctrine()->getManager();
         $repository = $this->getDoctrine()->getRepository(Category::class);
         $parent = $repository->find($request->request->get('parent'));
-        $node = new Category();
-        $node->setName($request->request->get('name'));
-        $node->setParent($parent);
-        $em->persist($node);
+        $category = new Category();
+        $category->setName($request->request->get('name'));
+        $category->setParent($parent);
+        $em->persist($category);
         $em->flush();
-        return new Response($node->getId());
+        return new Response($category->getId());
     }
 
     /**
@@ -107,9 +108,15 @@ class CategoriesListController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $repository = $this->getDoctrine()->getRepository(Category::class);
-        $node = $repository->find($request->request->get('node'));
-        if($node){
-            $em->remove($node);
+        $category = $repository->find($request->request->get('node'));
+        if ($category) {
+            foreach ($category->getProducts() as $product){
+                foreach ($product->getAttributes() as $attribute) {
+                    $em->remove($attribute);
+                }
+                $em->remove($product);
+            }
+            $em->remove($category);
             $em->flush();
         }
         return new Response('OK');
@@ -122,14 +129,36 @@ class CategoriesListController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $repository = $this->getDoctrine()->getRepository(Category::class);
-        $node = $repository->find($request->request->get('node'));
-        if($node->getName()!=$request->request->get('title')){
-            $node->setName($request->request->get('title'));
-            $em->persist($node);
+        $category = $repository->find($request->request->get('node'));
+        if ($category->getName() != $request->request->get('title')) {
+            $category->setName($request->request->get('title'));
+            $em->persist($category);
             $em->flush();
         }
 
-        return new Response('<h5>New node name: ' . $node->getName());
+        return new Response('<h5>New node name: ' . $category->getName());
     }
 
+    /**
+     * @Route("categories/edit", name="category_edit")
+     */
+    public function editCategoryAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repository = $this->getDoctrine()->getRepository(Category::class);
+        $category = $repository->find($request->request->get('node'));
+        $parent = $repository->find($request->request->get('parent'));
+        if($category->getName() != $request->request->get('title')){
+            $category->setName($request->request->get('title'));
+            $em->persist($category);
+        }
+        if($category->getParent() != $parent){
+            $category->setParent($parent);
+            $em->persist($category);
+        }
+        $em->flush();
+        return new Response('<div class="alert alert-success" role="alert">
+  Changes saved! Refresh page.
+</div>');
+    }
 }

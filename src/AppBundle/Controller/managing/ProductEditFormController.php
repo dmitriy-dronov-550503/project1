@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller\managing;
 
+use AppBundle\Entity\Attribute;
+use AppBundle\Entity\Category;
 use AppBundle\Entity\Product;
 use AppBundle\Form\EditProductType;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -9,6 +11,7 @@ use Doctrine\ORM\Id\UuidGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -35,12 +38,9 @@ class ProductEditFormController extends Controller
             $originalAttributes->add($attribute);
         }
 
-        $isImage = $product->getImage();
-        if ($isImage) {
-            $product->setImage(
-                new File($this->getParameter('images_directory') . '/' . $product->getImage())
-            );
-        }
+        $product->setImage(
+            new File($this->getParameter('images_directory') . '/' . $product->getImage())
+        );
 
 
         $form = $this->createForm(EditProductType::class, $product);
@@ -54,16 +54,16 @@ class ProductEditFormController extends Controller
                 }
             }
 
-            if(!$isImage){
-                /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
-                $file = $product->getImage();
-                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
-                $file->move(
-                    $this->getParameter('images_directory'),
-                    $fileName
-                );
-                $product->setImage($fileName);
-            }
+
+            /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
+            $file = $product->getImage();
+            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+            $file->move(
+                $this->getParameter('images_directory'),
+                $fileName
+            );
+            $product->setImage($fileName);
+
 
             $product->setDateLastChange(new \DateTime());
             $em->persist($product);
@@ -79,7 +79,7 @@ class ProductEditFormController extends Controller
     }
 
     /**
-     * @Route("/product_create", name="product_create")
+     * @Route("/product/create", name="product_create")
      */
     public function createEditForm(Request $request)
     {
@@ -108,10 +108,58 @@ class ProductEditFormController extends Controller
             $em->flush();
             return $this->redirectToRoute('product_edit', array('productId' => $product->getId()));
         }
-
         return $this->render(
             'managing/productEditForm.html.twig',
             array('form' => $form->createView())
         );
     }
+
+    /**
+     * @Route("product/delete/{id}", name="product_delete")
+     */
+    public function deleteProductAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repository = $this->getDoctrine()->getRepository(Product::class);
+        $product = $repository->find($id);
+        foreach ($product->getAttributes() as $attribute) {
+            $em->remove($attribute);
+        }
+        $em->remove($product);
+        $em->flush();
+        return $this->redirectToRoute('products');
+    }
+
+    /**
+     * @Route("product/create_ajax", name="product_create_ajax")
+     */
+    public function createAjaxAction(Request $request)
+    {
+        $attrName = $request->request->get('attrName');
+        $attrValue = $request->request->get('attrValue');
+        $name = $request->request->get('name');
+        $repository = $this->getDoctrine()->getRepository(Category::class);
+        $category = $repository->find($request->request->get('category'));
+        $description = $request->request->get('description');
+
+        $product = new Product();
+        $product->setName($name);
+        $product->setDescription($description);
+        $product->setCategory($category);
+        $attributes = array();
+        foreach ($attrName as $index => $attr){
+            $newAttr = new Attribute();
+            $newAttr->setName($attr);
+            $newAttr->setValue($attrValue[$index]);
+            $newAttr->setProduct($product);
+            array_push($attributes, $newAttr);
+        }
+        $product->setAttributes($attributes);
+        $product->setImage("0cbaa3ed3edc0a91ba0ef1f67f549f87.jpeg");
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($product);
+        $em->flush();
+        return new Response('Name: '.$name.' Description: '.$description);
+    }
+
 }

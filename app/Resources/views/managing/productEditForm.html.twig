@@ -1,26 +1,40 @@
 {% extends 'base.html.twig' %}
 
+{% form_theme form _self %}
+
+{% block text_widget %}
+    <input type="text" class="form-control" placeholder="Product name" {{ block('widget_attributes') }} {% if value is not empty %} value="{{ value }}" {% endif %}/>
+{% endblock %}
+
+{% block file_widget %}
+    <input type="file" class="form-control-file" {{ block('widget_attributes') }} {% if value is not empty %} value="{{ value }}" {% endif %}/>
+{% endblock %}
+
+{% block textarea_widget %}
+    <textarea class="form-control" row="3" maxlength="1000" placeholder="not more than 1000" {{ block('widget_attributes') }} {% if value is not empty %} value="{{ value }}" {% endif %}>
+    </textarea>
+{% endblock %}
+
+{% block _attributes_vars_prototype_widget %}
+    <input type="text" class="form-control" placeholder="Attribute name" {{ block('widget_attributes') }} {% if value is not empty %} value="{{ value }}" {% endif %}/>
+{% endblock %}
+
 {% block javascripts %}
     <script src="{{ asset('dynatree/jquery/jquery.js') }}" type="text/javascript"></script>
     <script src="{{ asset('dynatree/jquery/jquery-ui.custom.js') }}" type="text/javascript"></script>
     <script src="{{ asset('dynatree/jquery/jquery.cookie.js') }}" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('dynatree/src/skin/ui.dynatree.css') }}">
+    <script src="{{ asset('dynatree/src/jquery.dynatree.js') }}" type="text/javascript"></script>
     <script>
-        function addAttribute() {
-            $("<input type='text' value=''/>")
-                .attr("id", "myfieldid")
-                .attr("name", "myfieldid")
-                .appendTo("#attributes");
-        }
-
         var $collectionHolder;
 
         // setup an "add a tag" link
-        var $addTagLink = $('<a href="#" class="add_tag_link">Add a tag</a>');
-        var $newLinkLi = $('<li></li>').append($addTagLink);
+        var $addTagLink = $('<a href="#" class="add_tag_link">Add attribute</a>');
+        var $newLinkLi = $('<div></div>').append($addTagLink);
 
-        jQuery(document).ready(function() {
+        jQuery(document).ready(function () {
             // Get the ul that holds the collection of tags
-            $collectionHolder = $('ul.tags');
+            $collectionHolder = $('div.attributes');
 
             // add the "add a tag" anchor and li to the tags ul
             $collectionHolder.append($newLinkLi);
@@ -29,7 +43,7 @@
             // index when inserting a new item (e.g. 2)
             $collectionHolder.data('index', $collectionHolder.find(':input').length);
 
-            $addTagLink.on('click', function(e) {
+            $addTagLink.on('click', function (e) {
                 // prevent the link from creating a "#" on the URL
                 e.preventDefault();
 
@@ -37,7 +51,7 @@
                 addTagForm($collectionHolder, $newLinkLi);
             });
 
-            $collectionHolder.find('li').each(function() {
+            $collectionHolder.find('div.attrVals').each(function () {
                 addTagFormDeleteLink($(this));
             });
         });
@@ -63,7 +77,7 @@
             $collectionHolder.data('index', index + 1);
 
             // Display the form in the page in an li, before the "Add a tag" link li
-            var $newFormLi = $('<li></li>').append(newForm);
+            var $newFormLi = $('<div class="form-group attrVals"></div>').append(newForm);
             $newLinkLi.before($newFormLi);
 
             addTagFormDeleteLink($newFormLi);
@@ -71,10 +85,12 @@
 
 
         function addTagFormDeleteLink($tagFormLi) {
-            var $removeFormA = $('<a href="#">delete this tag</a>');
+            var $removeFormA = $('<button type="button" class="close" aria-label="Close">' +
+                '<span aria-hidden="true">&times;</span>' +
+                '</button>');
             $tagFormLi.append($removeFormA);
 
-            $removeFormA.on('click', function(e) {
+            $removeFormA.on('click', function (e) {
                 // prevent the link from creating a "#" on the URL
                 e.preventDefault();
 
@@ -83,23 +99,58 @@
             });
         }
     </script>
-
+    <script>
+        $(function () {
+            $("#tree").dynatree({
+                onActivate: function (node) {
+                    $('#renamedValue').val(node.data.title);
+                    var node = $("#tree").dynatree("getActiveNode");
+                    $("div.categoriesSelect select").val(node.data.key);
+                },
+                //persist: true,
+                initAjax: {
+                    url: "{{ path('get_category_tree') }}"
+                }
+            });
+        });
+    </script>
 {% endblock %}
 
 {% block body %}
-    {{ form_start(form) }}
-    {{ form_row(form.name) }}
-    {{ form_row(form.description) }}
-    {{ form_row(form.category) }}
-
-    <ul class="tags" data-prototype="{{ form_widget(form.attributes.vars.prototype)|e('html_attr') }}">
-    {% for attribute in form.attributes %}
-        <li>{{ form_row(attribute.name) }}
-        {{ form_row(attribute.value) }}</li>
-    {% endfor %}
-    </ul>
-    {{ form_row(form.image) }}
-    <button type="submit">Save</button>
-    {{ form_end(form) }}
-    <button class="btn-link" onclick="addAttribute()">Add</button>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                {{ form_start(form) }}
+                <div class="form-group">
+                    <label>Product name:</label>
+                    {{ form_widget(form.name) }}
+                </div>
+                <div class="form-group">
+                    <label>Description:</label>
+                    {{ form_widget(form.description) }}
+                </div>
+                <div class="form-group">
+                    <label>Choose category:</label>
+                    <div id="tree"></div>
+                    <div class="categoriesSelect" hidden>
+                        {{ form_widget(form.category) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Upload image:</label>
+                    {{ form_widget(form.image) }}
+                </div>
+                <div class="form-group">
+                    <div class="form-group attributes" data-prototype="{{ form_widget(form.attributes.vars.prototype)|e('html_attr') }}">
+                        {% for attribute in form.attributes %}
+                        <div class="form-group">{{ form_widget(attribute.name) }}
+                                {{ form_widget(attribute.value) }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" id="submitButton">Create product</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}

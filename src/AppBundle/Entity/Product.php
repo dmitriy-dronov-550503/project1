@@ -39,6 +39,7 @@ class Product implements \Serializable
     {
         return $this->children;
     }
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -47,7 +48,7 @@ class Product implements \Serializable
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=191, unique=true)
+     * @ORM\Column(type="string", length=191, unique=false)
      * @Assert\NotBlank()
      */
     private $name;
@@ -107,9 +108,16 @@ class Product implements \Serializable
     private $parent;
 
     /**
+     * @param mixed $attributes
+     */
+    public function setAttributes($attributes)
+    {
+        $this->attributes = $attributes;
+    }
+
+    /**
      * @ORM\Column(type="string")
      *
-     * @Assert\NotBlank(message="Please, upload the product image.")
      * @Assert\File()
      */
     private $image;
@@ -275,14 +283,17 @@ class Product implements \Serializable
         return $this->uniqueIdentifier;
     }
 
-    public function __construct() {
+    public function __construct()
+    {
         //$this->dateWasCreated = date('H:i:s \O\n d/m/Y');
         $this->dateWasCreated = new \DateTime();
+        $this->dateLastChange = new \DateTime();
         $this->attributes = new \Doctrine\Common\Collections\ArrayCollection();
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->isActive = true;
         $this->uniqueIdentifier = $this->guidv4();
     }
+
 
     private function guidv4()
     {

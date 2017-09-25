@@ -1,0 +1,34 @@
+{% if not products %}
+    <h1>No items</h1>
+{% else %}
+    {% for product in products %}
+
+        <div class="card" style="max-width: 20rem; min-width: 15rem;">
+            <div class="imageContainer">
+                <img class="card-img-top img" src="{{ asset('uploads/images/' ~ product.image) }}" onclick="createViewModal('{{ product.id }}')" data-toggle="modal"
+                     data-target=".bd-example-modal-lg" alt="Card image cap">
+            </div>
+            <div class="card-body">
+                <h4 class="card-title">{{ product.name }}</h4>
+                <p class="card-text">{{ product.description }}</p>
+            </div>
+            <div class="card-footer">
+                <a href="{{ path('product_page',  {'id': product.id}) }}" class="card-link"><small>{% trans %}Details{% endtrans %}</small></a>
+                {% if is_granted(['ROLE_ADMIN','ROLE_EDITOR']) %}
+                <a href="{{ path('product_edit',  {'productId': product.id}) }}" class="card-link"><small>{% trans %}Edit{% endtrans %}</small></a>
+                <a href="javascript:confirmDelete({{ product.id }});" class="card-link"><small>{% trans %}Delete{% endtrans %}</small></a>
+                {% endif %}
+            </div>
+        </div>
+        <script type="text/javascript">
+            function confirmDelete(id) {
+                var answer = confirm ("Please click on OK to continue.");
+                var url = '{{ path('product_delete',  {'id': 'product_id'}) }}';
+                url = url.replace("product_id", id);
+                if (answer)
+                    window.location=url;
+
+            }
+        </script>
+    {% endfor %}
+{% endif %}

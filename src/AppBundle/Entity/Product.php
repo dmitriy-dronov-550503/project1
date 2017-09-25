@@ -13,6 +13,33 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Product implements \Serializable
 {
+    public function addAttribute(Attribute $attr)
+    {
+        $attr->setProduct($this);
+        $this->attributes->add($attr);
+    }
+
+    public function removeAttribute(Attribute $attr)
+    {
+        $this->attributes->removeElement($attr);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -21,14 +48,24 @@ class Product implements \Serializable
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=191, unique=true)
+     * @ORM\Column(type="string", length=191, unique=false)
      * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 4,
+     *      max = 191,
+     *      minMessage = "Product name must be at least {{ limit }} characters long",
+     *      maxMessage = "Product name cannot be longer than {{ limit }} characters"
+     * )
      */
     private $name;
 
     /**
      * @ORM\Column(name="description", length=1000, type="text", options={"default" : NULL})
      * @Assert\NotBlank()
+     * @Assert\Length(
+     *      max = 1000,
+     *      maxMessage = "Product description cannot be longer than {{ limit }} characters"
+     * )
      */
     private $description;
 
@@ -56,7 +93,7 @@ class Product implements \Serializable
 
     /**
      * One Product has Many Attributes.
-     * @ORM\OneToMany(targetEntity="Attribute", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="Attribute", mappedBy="product", cascade={"persist"})
      */
     private $attributes;
 
@@ -78,6 +115,37 @@ class Product implements \Serializable
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */
     private $parent;
+
+    /**
+     * @param mixed $attributes
+     */
+    public function setAttributes($attributes)
+    {
+        $this->attributes = $attributes;
+    }
+
+    /**
+     * @ORM\Column(type="string")
+     *
+     * @Assert\File()
+     */
+    private $image;
+
+    /**
+     * @return mixed
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
 
     /**
      * @return mixed
@@ -138,7 +206,7 @@ class Product implements \Serializable
     /**
      * @return mixed
      */
-    public function getisActive()
+    public function getIsActive()
     {
         return $this->isActive;
     }
@@ -224,14 +292,17 @@ class Product implements \Serializable
         return $this->uniqueIdentifier;
     }
 
-    public function __construct() {
+    public function __construct()
+    {
         //$this->dateWasCreated = date('H:i:s \O\n d/m/Y');
         $this->dateWasCreated = new \DateTime();
+        $this->dateLastChange = new \DateTime();
         $this->attributes = new \Doctrine\Common\Collections\ArrayCollection();
         $this->children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->isActive = true;
         $this->uniqueIdentifier = $this->guidv4();
     }
+
 
     private function guidv4()
     {

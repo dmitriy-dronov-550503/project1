@@ -5,7 +5,7 @@ security:
         our_db_provider:
              entity:
                  class: AppBundle:User
-                 property: username
+
 
     encoders:
         AppBundle\Entity\User:
@@ -30,9 +30,27 @@ security:
             logout:
                 path:   /logout
                 target: /
+            remember_me:
+                            secret:   '%secret%'
+                            lifetime: 604800 # 1 week in seconds
+                            path:     /
+
     access_control:
          # require ROLE_ADMIN for /admin*
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/userpage, roles: ROLE_USER }
          - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
          - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: ^/(en|ru)/categories$, roles: [ROLE_ADMIN, ROLE_EDITOR] }
+         - { path: ^/(en|ru)/products$, roles: [ROLE_ADMIN, ROLE_EDITOR, ROLE_USER] }
+         - { path: ^/(en|ru)/product_page$, roles: [ROLE_ADMIN, ROLE_EDITOR, ROLE_USER] }
+         - { path: ^/(en|ru)/product_view$, roles: [ROLE_ADMIN, ROLE_EDITOR, ROLE_USER] }
+         - { path: ^/(en|ru)/category_create$, roles: [ROLE_ADMIN, ROLE_EDITOR] }
+         - { path: ^/(en|ru)/category_edit$, roles: [ROLE_ADMIN, ROLE_EDITOR] }
+         - { path: ^/(en|ru)/category_delete$, roles: [ROLE_ADMIN, ROLE_EDITOR] }
+         - { path: ^/(en|ru)/category_create$, roles: [ROLE_ADMIN, ROLE_EDITOR] }
+         - { path: ^/(en|ru)/product$, roles: [ROLE_ADMIN, ROLE_EDITOR] }
+         - { path: ^/(en|ru)/user$, roles: [ROLE_ADMIN] }
+         - { path: ^/(en|ru)/user_list$, roles: [ROLE_ADMIN] }
+
+

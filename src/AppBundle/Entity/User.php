@@ -14,10 +14,57 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="users")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  */
 class User implements AdvancedUserInterface, \Serializable
 {
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getisActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param mixed $isActive
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    /**
+     * @param mixed $role
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
+    }
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -28,11 +75,23 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @ORM\Column(type="string", length=25, unique=true)
      * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 4,
+     *      max = 25,
+     *      minMessage = "Your username must be at least {{ limit }} characters long",
+     *      maxMessage = "Your username cannot be longer than {{ limit }} characters"
+     * )
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=64)
+     * @Assert\Length(
+     *      min = 6,
+     *      max = 64,
+     *      minMessage = "Your password must be at least {{ limit }} characters long",
+     *      maxMessage = "Your password cannot be longer than {{ limit }} characters"
+     * )
      */
     private $password; // its an encoded plainpassword
 
@@ -62,17 +121,35 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @ORM\Column(type="string", length=50)
      * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 50,
+     *      minMessage = "Your first name must be at least {{ limit }} characters long",
+     *      maxMessage = "Your first name cannot be longer than {{ limit }} characters"
+     * )
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=50)
      * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 50,
+     *      minMessage = "Your last name must be at least {{ limit }} characters long",
+     *      maxMessage = "Your last name cannot be longer than {{ limit }} characters"
+     * )
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 50,
+     *      minMessage = "Your patronymic name must be at least {{ limit }} characters long",
+     *      maxMessage = "Your patronymic name cannot be longer than {{ limit }} characters"
+     * )
      */
     private $patronymicName;
 
@@ -212,6 +289,7 @@ class User implements AdvancedUserInterface, \Serializable
         return serialize(array(
             $this->id,
             $this->username,
+            $this->email,
             $this->password,
             $this->isActive
         ));
@@ -223,8 +301,11 @@ class User implements AdvancedUserInterface, \Serializable
         list (
             $this->id,
             $this->username,
+            $this->email,
             $this->password,
             $this->isActive
             ) = unserialize($serialized);
     }
+
+
 }

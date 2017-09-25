@@ -46,6 +46,12 @@ class Category
     /**
      * @ORM\Column(type="string", length=191, unique=false)
      * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 4,
+     *      max = 191,
+     *      minMessage = "Category name must be at least {{ limit }} characters long",
+     *      maxMessage = "Category name cannot be longer than {{ limit }} characters"
+     * )
      */
     private $name;
 

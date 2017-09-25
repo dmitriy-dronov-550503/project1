@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Product catalog{% endblock %}
+
 {% block javascripts %}
 
     <script src="{{ asset('dynatree/jquery/jquery.js') }}" type="text/javascript"></script>
@@ -33,6 +35,9 @@
             $(window).load(function() {
                 $("#tree").dynatree("getRoot").getChildren()[0].activate(true);
             });
+        });
+        $(function () {
+
         });
     </script>
     <script type="text/javascript">
@@ -92,6 +97,7 @@
 
 
     </style>
+
     <div class="container-fluid">
         <div class="row">
             <nav class="col-sm-3 col-md-2 d-flex bg-light sidebar">
@@ -99,15 +105,11 @@
                     <li class="nav-item">
                         <div id="tree"></div>
                     </li>
+                    {% if is_granted(['ROLE_ADMIN','ROLE_EDITOR']) %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('product_create') }}">Create product</a>
+                        <a class="nav-link" href="{{ path('product_create') }}">{% trans %}Create product{% endtrans %}</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">some link</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">render filters</a>
-                    </li>
+                    {% endif %}
                 </ul>
             </nav>
             <main class="col-sm-9 ml-sm-auto col-md-10 pt-3 d-flex" role="main">

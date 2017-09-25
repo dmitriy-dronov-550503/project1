@@ -13,9 +13,11 @@
                 <p class="card-text">{{ product.description }}</p>
             </div>
             <div class="card-footer">
-                <a href="{{ path('product_page',  {'id': product.id}) }}" class="card-link"><small>Details</small></a>
-                <a href="{{ path('product_edit',  {'productId': product.id}) }}" class="card-link"><small>Edit</small></a>
-                <a href="javascript:confirmDelete({{ product.id }});" class="card-link"><small>Delete</small></a>
+                <a href="{{ path('product_page',  {'id': product.id}) }}" class="card-link"><small>{% trans %}Details{% endtrans %}</small></a>
+                {% if is_granted(['ROLE_ADMIN','ROLE_EDITOR']) %}
+                <a href="{{ path('product_edit',  {'productId': product.id}) }}" class="card-link"><small>{% trans %}Edit{% endtrans %}</small></a>
+                <a href="javascript:confirmDelete({{ product.id }});" class="card-link"><small>{% trans %}Delete{% endtrans %}</small></a>
+                {% endif %}
             </div>
         </div>
         <script type="text/javascript">

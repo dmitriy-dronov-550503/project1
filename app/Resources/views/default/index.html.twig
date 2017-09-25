@@ -1,39 +1,22 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div id="wrapper">
-        <div id="container">
-            <div id="welcome">
-                <h1><span>Welcome to</span>Symfony {{ constant('Symfony\\Component\\HttpKernel\\Kernel::VERSION') }}</h1>
-            </div>
-
-            <div id="status">
-                <p>
-                    <svg id="icon-status" width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1671 566q0 40-28 68l-724 724-136 136q-28 28-68 28t-68-28l-136-136-362-362q-28-28-28-68t28-68l136-136q28-28 68-28t68 28l294 295 656-657q28-28 68-28t68 28l136 136q28 28 28 68z" fill="#759E1A"/></svg>
-
-                    Your application is now ready. You can start working on it at:
-                    <code>{{ base_dir }}</code>
-                </p>
-            </div>
-
-            <div id="next">
-                <h2>What's next?</h2>
-                <p>
-                    <h3>Go throw all pages:</h3>
-                <p><a href="{{ path('categories') }}">Category List</a></p>
-                <p><a href="{{ path('products') }}">Product List</a></p>
-                <p><a href="{{ path('product_view', { 'id': '1' }) }}">Product View</a></p>
-                <p><a href="{{ path('login') }}">Login</a></p>
-                <p><a href="{{ path('restore_password') }}">Restore Password</a></p>
-                <p><a href="{{ path('category_create') }}">Edit category FORM</a></p>
-                <p><a href="{{ path('product_edit', { 'productId': '1' }) }}">Product edit FORM</a></p>
-                <p><a href="{{ path('product_create') }}">Create product</a></p>
-                <p><a href="{{ path('register') }}">Registration</a></p>
-                <p><a href="{{ path('user_list') }}">User list</a></p>
-                </p>
-            </div>
-
-        </div>
+    <div class="jumbotron">
+        <h1 class="display-3">Hello!</h1>
+        {% if not app.user %}
+            <p class="lead">Welcome to our product catalog! Please sign in or sign up to continue.</p>
+        {% else %}
+            <p class="lead">Welcome to our product catalog! Now you can look around our products.</p>
+        {% endif %}
+        <hr class="my-4">
+        <p>Authors: Dronov Dmitriy, Sergey Tverdochleb.</p>
+        <p class="lead">
+            {% if not app.user %}
+                <a class="btn btn-primary btn-lg" href="{{ path('login') }}" role="button">Sign in</a>
+            {% else %}
+                <a class="btn btn-primary btn-lg" href="{{ path('products') }}" role="button">Product list</a>
+            {% endif %}
+        </p>
     </div>
 {% endblock %}
 

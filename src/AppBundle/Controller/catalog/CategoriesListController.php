@@ -73,7 +73,7 @@ class CategoriesListController extends Controller
     }
 
     /**
-     * @Route("categories/flush", name="category_flush")
+     * @Route("/categories/flush", name="category_flush")
      */
     public function flushAction(Request $request)
     {

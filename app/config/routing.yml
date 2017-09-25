@@ -4,3 +4,75 @@ app:
 
 logout:
     path: /logout
+
+default:
+    path:     /{_locale}
+    defaults: { _controller: AppBundle:Default:index }
+    requirements:
+        _locale: en|ru
+
+products:
+    path:     /{_locale}/products
+    defaults: { _controller: AppBundle:catalog\ProductList:index }
+    requirements:
+        _locale: en|ru
+
+categories:
+    path:     /{_locale}/categories
+    defaults: { _controller: AppBundle:catalog\CategoriesList:index }
+    requirements:
+        _locale: en|ru
+
+user_list:
+    path:     /{_locale}/user_list
+    defaults: { _controller: AppBundle:users\UserList:index }
+    requirements:
+        _locale: en|ru
+
+login:
+    path:     /{_locale}/login
+    defaults: { _controller: AppBundle:login\Login:login }
+    requirements:
+        _locale: en|ru
+
+register:
+    path:     /{_locale}/register
+    defaults: { _controller: AppBundle:registration\Registration:register }
+    requirements:
+        _locale: en|ru
+
+product_page:
+    path:     /{_locale}/product_page/{id}
+    defaults: { _controller: AppBundle:catalog\ProductPage:productView }
+    requirements:
+        _locale: en|ru
+
+product_ajax_view:
+    path:     /{_locale}/product_view
+    defaults: { _controller: AppBundle:catalog\ProductView:productView }
+    requirements:
+        _locale: en|ru
+
+product_view_action:
+    path:     /{_locale}/product_view/action
+    defaults: { _controller: AppBundle:catalog\ProductView:data }
+    requirements:
+        _locale: en|ru
+
+product_view:
+    path:     /{_locale}/product_view/{id}
+    defaults: { _controller: AppBundle:catalog\ProductView:productViewId }
+    requirements:
+        _locale: en|ru
+
+product_edit:
+    path:     /{_locale}/product/edit/{productId}
+    defaults: { _controller: AppBundle:managing\ProductEditForm:productEdit }
+    requirements:
+        _locale: en|ru
+
+product_create:
+    path:     /{_locale}/product/create
+    defaults: { _controller: AppBundle:managing\ProductEditForm:createEditForm }
+    requirements:
+        _locale: en|ru

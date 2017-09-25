@@ -81,7 +81,7 @@ class ProductEditFormController extends Controller
     /**
      * @Route("/product/create", name="product_create")
      */
-    public function createEditForm(Request $request)
+    public function createEditFormAction(Request $request)
     {
         $product = new Product();
         $product->setDateWasCreated(new \DateTime());

@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Product page{% endblock %}
+
 {% block stylesheets %}
     <style>
         .container {
@@ -24,15 +26,15 @@
         </div>
         <div class="col-5">
             <div class="row">
-                <h5><p>Description:</p></h5>
+                <h5><p>{% trans %}Description{% endtrans %}:</p></h5>
                 <h7><p>{{ product.description }}</p></h7>
             </div>
             <div class="row">
                 <table class="table table-sm">
                     <thead>
                     <tr>
-                        <th>Feature</th>
-                        <th>Value</th>
+                        <th>{% trans %}Feature{% endtrans %}</th>
+                        <th>{% trans %}Value{% endtrans %}</th>
                     </tr>
                     </thead>
                     <tbody>

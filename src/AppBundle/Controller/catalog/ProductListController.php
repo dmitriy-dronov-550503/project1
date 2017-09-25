@@ -36,8 +36,9 @@ class ProductListController extends Controller
         $category = $repository->find($id);
         $categories = array($category);
         $categories = $this->getCategories($categories, $category);
+
         return $this->render('catalog/productListRender.html.twig', [
-            'products' => $this->getDoctrine()->getRepository(Product::class)->findBy(array('category' => $categories))
+            'products' => $this->getDoctrine()->getRepository(Product::class)->findBy(array('category' => $categories)),
         ]);
     }
 

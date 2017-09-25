@@ -50,12 +50,22 @@ class Product implements \Serializable
     /**
      * @ORM\Column(type="string", length=191, unique=false)
      * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 4,
+     *      max = 191,
+     *      minMessage = "Product name must be at least {{ limit }} characters long",
+     *      maxMessage = "Product name cannot be longer than {{ limit }} characters"
+     * )
      */
     private $name;
 
     /**
      * @ORM\Column(name="description", length=1000, type="text", options={"default" : NULL})
      * @Assert\NotBlank()
+     * @Assert\Length(
+     *      max = 1000,
+     *      maxMessage = "Product description cannot be longer than {{ limit }} characters"
+     * )
      */
     private $description;
 

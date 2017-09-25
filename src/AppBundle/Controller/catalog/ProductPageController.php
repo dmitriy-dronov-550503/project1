@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductPageController extends Controller
 {
     /**
-     * @Route("/product_page/{id}", name="product_page", requirements={"id": "\d+"})
+     * @Route("/{_locale}/product_page/{id}", name="product_page", requirements={"id": "\d+"})
      */
     public function productViewAction(Request $request, $id)
     {

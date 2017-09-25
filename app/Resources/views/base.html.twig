@@ -32,7 +32,7 @@
 
 
 <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
-    <a class="navbar-brand" href="#">Dashboard</a>
+    <a class="navbar-brand" href="#">CatLog</a>
     <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -40,33 +40,43 @@
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="{{ path('homepage') }}">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="{{ path('homepage') }}">{% trans %}Home{% endtrans %}<span class="sr-only">(current)</span></a>
+            </li>
+            {% if is_granted(['ROLE_ADMIN','ROLE_EDITOR','ROLE_USER']) %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('products') }}">{% trans %}Product list{% endtrans %}</a>
+            </li>
+            {% endif %}
+            {% if not app.user %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('login') }}">{% trans %}Sign in{% endtrans %}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('products') }}">Product list</a>
+                <a class="nav-link" href="{{ path('register') }}">{% trans %}Sign up{% endtrans %}</a>
             </li>
+            {% endif %}
+            {% if app.user %}
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('login') }}">Sign in</a>
+                <a class="nav-link" href="{{ path('logout') }}">{% trans %}Logout{% endtrans %}</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('register') }}">Sign up</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('logout') }}">Logout</a>
-            </li>
+            {% endif %}
+            {% if is_granted(['ROLE_ADMIN','ROLE_EDITOR']) %}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Managing
+                    {% trans %}Managing{% endtrans %}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="{{ path('categories') }}">Manage categories</a>
-                    <a class="dropdown-item" href="{{ path('user_list') }}">Manage users</a>
+                    <a class="dropdown-item" href="{{ path('categories') }}">{% trans %}Manage categories{% endtrans %}</a>
+                    {% if is_granted(['ROLE_ADMIN']) %}
+                    <a class="dropdown-item" href="{{ path('user_pagination') }}">{% trans %}Manage users{% endtrans %}</a>
+                    {% endif %}
                 </div>
             </li>
+            {% endif %}
         </ul>
         <form class="form-inline mt-2 mt-md-0">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" hidden>
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" hidden>Search</button>
         </form>
     </div>
 </nav>
